@@ -2,6 +2,7 @@ import { FiSearch } from "react-icons/fi";
 import { useRouter } from 'next/router'
 import { useEffect, useState } from "react";
 import Spinner from "../components/Spinner";
+import SupabaseService from "../services/Supabase.service";
 
 const Result = () => {
     const router = useRouter()
@@ -11,10 +12,16 @@ const Result = () => {
     const handleInputChange = (e) => {
         setSearchQuery(e.target.value.trim())
     }
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (searchQuery === '') return
         setItems(null)
-        setTimeout(() => {setItems([])}, 3000)
+        const service = new SupabaseService()
+        try {
+            const result = await service.search(searchQuery, 'id, name, address, telephone, website, image', 'name')
+            setItems(result.data)
+        } catch (error) {
+            console.log({error})
+        }
     }
     useEffect(() => {
         setSearchQuery(router.query.s || '')
@@ -58,11 +65,10 @@ const Result = () => {
                 <table className="card-table table-nowrap table table-sm table-hover">
                     <thead>
                         <tr>
+                            <th colSpan="1">Ref</th>
                             <th colSpan="1">Name</th>
-                            <th colSpan="1">Industry</th>
-                            <th colSpan="1">Location</th>
-                            <th colSpan="1">Owner</th>
-                            <th colSpan="1">Crated at</th>
+                            <th colSpan="1">Adress</th>
+                            <th colSpan="1">website</th>
                         </tr>
                     </thead>
                     {
@@ -72,28 +78,28 @@ const Result = () => {
                             </tr>
                         )
                     }
-                    {/*
-                    <tbody className="fs-base">
-                        <tr>
-                            <td>
-                                <div className="avatar avatar-xs me-2">
-                                    <img className="avatar-img rounded-circle"
-                                        src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-1.jpg" alt="Launchday" />
-                                </div>
-                                <a className="text-reset" href="/team-overview">Launchday</a>
-                            </td>
-                            <td>Web design</td>
-                            <td>Los Angeles, CA</td>
-                            <td>
-                                <a className="text-reset" href="/profile-posts">Dianna Smiley</a>
-                            </td>
-                            <td>
-                                <time dateTime="2020-01-14">Jan 14, 2020</time>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    */}
+                    {
+                        items && (
+                            <tbody className="fs-base">
+                                {
+                                    items.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>#{item.id}</td>
+                                            <td>
+                                                <div className="avatar avatar-xs me-2">
+                                                    <img className="avatar-img rounded-circle"
+                                                        src={item.image} alt="Launchday" />
+                                                </div>
+                                                {item.name}
+                                            </td>
+                                            <td>{item.address}</td>
+                                            <td>{item.website}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        )
+                    }
                 </table>
             </div>
         </div>
