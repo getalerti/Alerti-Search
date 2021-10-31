@@ -1,8 +1,9 @@
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useEffect, useState } from "react";
-import Spinner from "../components/Spinner";
-import SupabaseService from "../services/Supabase.service";
+import Spinner from "./../../components/Spinner";
+import SupabaseService from "./../../services/Supabase.service";
 
 const Result = () => {
     const router = useRouter()
@@ -12,21 +13,30 @@ const Result = () => {
     const handleInputChange = (e) => {
         setSearchQuery(e.target.value.trim())
     }
-    const handleSearch = async () => {
+    const search = async (query) => {
+      const service = new SupabaseService()
+      setItems(null)
+      try {
+          const result = await service.search(query, 'id, name, logo, tagLine, website', 'name')
+          setItems(result.data)
+      } catch (error) {
+          setItems([])
+          console.log({error})
+      }
+    }
+    const handleSearch = () => {
         if (searchQuery === '') return
-        setItems(null)
-        const service = new SupabaseService()
-        try {
-            const result = await service.search(searchQuery, 'id, name, address, telephone, website, image', 'name')
-            setItems(result.data)
-        } catch (error) {
-            console.log({error})
-        }
+        search(searchQuery)
+
     }
     useEffect(() => {
+        console.log(router.query)
         setSearchQuery(router.query.s || '')
+        if (router.query.s && router.query.s !== '')
+          search(router.query.s)
     }, [])
     return (
+      <>
         <div className="col-lg-10 mx-auto p-5">
             <div className="header">
                 <div className="header-body">
@@ -48,12 +58,13 @@ const Result = () => {
                                     </span>
                                 <input
                                     onChange={handleInputChange}
-                                    placeholder="Search" 
-                                    type="search" 
+                                    value={searchQuery}
+                                    placeholder="Search"
+                                    type="search"
                                     className="form-control" />
-                                <button 
+                                <button
                                     onClick={handleSearch}
-                                    type="button" 
+                                    type="button"
                                     disabled={items === null}
                                     className="btn btn-primary btn-sm rounded">Search</button>
                             </div>
@@ -67,7 +78,7 @@ const Result = () => {
                         <tr>
                             <th colSpan="1">Ref</th>
                             <th colSpan="1">Name</th>
-                            <th colSpan="1">Adress</th>
+                            <th colSpan="1">Tag line</th>
                             <th colSpan="1">website</th>
                         </tr>
                     </thead>
@@ -84,16 +95,26 @@ const Result = () => {
                                 {
                                     items.map((item, index) => (
                                         <tr key={index}>
-                                            <td>#{item.id}</td>
-                                            <td>
+                                            <td className="ref-td">
+                                              <Link href={`/results/${item.id}`}>
+                                                <a>#{item.id}</a>
+                                              </Link>
+                                            </td>
+                                            <td className="limited-td">
                                                 <div className="avatar avatar-xs me-2">
                                                     <img className="avatar-img rounded-circle"
-                                                        src={item.image} alt="Launchday" />
+                                                        src={item.logo || `https://fakeimg.pl/500x500/282828/eae0d0/?retina=1&text=Default`} alt="Launchday" />
                                                 </div>
                                                 {item.name}
                                             </td>
-                                            <td>{item.address}</td>
-                                            <td>{item.website}</td>
+                                            <td>
+                                              <p className="limited-td">{item.tagLine}</p>
+                                            </td>
+                                            <td>
+                                              <p className="limited-td">
+                                                <a target="_blank" href={item.website}>{item.website}</a>
+                                              </p>
+                                            </td>
                                         </tr>
                                     ))
                                 }
@@ -102,7 +123,22 @@ const Result = () => {
                     }
                 </table>
             </div>
-        </div>
+          </div>
+          <style>
+            {`
+              .limited-td {
+                max-width: 350px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              .ref-td {
+                text-decoration: underline;
+                cursor: pointer;
+              }
+            `}
+          </style>
+        </>
     )
 }
 
