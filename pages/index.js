@@ -7,8 +7,12 @@ export default function Home() {
 
   const handleSearchKeyup = (e) => {
     setSearchQuery(e.target.value.trim())
+    if (e.key === 'Enter') {
+      // handleSubmit()
+    }
   }
-  const handleSubmit = () => {
+  const handleSubmit = (e = null) => {
+    if (e) e.preventDefault();
     if (searchQuery === '') return
     router.push(`/results?s=${searchQuery}`)
   }
@@ -19,15 +23,18 @@ export default function Home() {
           <div className="card-body p-5">
             <img className="img-fluid my-5 d-block mx-auto search-box-img" src="https://dashkit-react.vercel.app/img/illustrations/happiness.svg" alt="..." />
             <div className="col-lg-5 col-md-6 mx-auto">
-              <input 
-              onChange={handleSearchKeyup}
-              placeholder="Search the company" 
-              className="form-control-rounded form-control" />
-              <button 
-              onClick={handleSubmit}
-              type="button" 
-              className="my-3 px-5 mx-auto d-block btn btn-primary" 
-              disabled={searchQuery === ''}>Search</button>
+              <form onSubmit={handleSubmit}>
+                <input 
+                value={searchQuery}
+                onChange={handleSearchKeyup}
+                placeholder="Search the company" 
+                className="form-control-rounded form-control" />
+                <button 
+                onClick={handleSubmit}
+                type="button" 
+                className="my-3 px-5 mx-auto d-block btn btn-primary" 
+                disabled={searchQuery === ''}>Search</button>
+              </form>
             </div>
           </div>
         </div>

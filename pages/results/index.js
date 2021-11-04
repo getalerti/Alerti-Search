@@ -1,9 +1,9 @@
-import { FiSearch } from "react-icons/fi";
+import { FiSearch } from 'react-icons/fi';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useEffect, useState } from "react";
-import Spinner from "./../../components/Spinner";
-import SupabaseService from "./../../services/Supabase.service";
+import { useEffect, useState } from 'react';
+import Spinner from './../../components/Spinner';
+import SupabaseService from './../../services/Supabase.service';
 
 const Result = () => {
     const router = useRouter()
@@ -11,13 +11,14 @@ const Result = () => {
     const [items, setItems] = useState([])
 
     const handleInputChange = (e) => {
+        setItems(null)
         setSearchQuery(e.target.value.trim())
     }
     const search = async (query) => {
       const service = new SupabaseService()
       setItems(null)
       try {
-          const result = await service.search(query, 'id, name, logo, tagLine, website', 'name')
+          const result = await service.search(query, 'id, name, logo, tagLine, website', 'name, tagLine, description, specialties, type')
           setItems(result.data)
       } catch (error) {
           setItems([])
@@ -25,16 +26,19 @@ const Result = () => {
       }
     }
     const handleSearch = () => {
-        if (searchQuery === '') return
+        if (searchQuery === '' || searchQuery.length < 3) return
         search(searchQuery)
 
     }
     useEffect(() => {
-        console.log(router.query)
         setSearchQuery(router.query.s || '')
         if (router.query.s && router.query.s !== '')
           search(router.query.s)
     }, [])
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(handleSearch, 1000)
+        return () => clearTimeout(delayDebounceFn)
+      }, [searchQuery])
     return (
       <>
         <div className="col-lg-10 mx-auto p-5">

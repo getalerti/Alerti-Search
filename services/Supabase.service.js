@@ -8,11 +8,24 @@ class SupabaseService {
         }
         this.supabase = createClient(env.superBaseUrl, env.superBasePublicKey)
     }
-    search = function (query, selectedFields, field, table = null) {
+    search = function (query, selectedFields, fields, table = null) {
+        const fildsArray = fields.split(',')
+        let fieldQuery = ''
+        fildsArray.forEach((field, index) => {
+            const _query = `${field}.ilike.%${query}%`
+            fieldQuery += `${index > 0 ? ',' : ''}${_query}`
+        })
+        console.log({fieldQuery})
         return this.supabase
             .from(table || env.subabaseDefaultTable)
             .select(selectedFields)
-            .like(field, `%${query}%`)
+            .or(fieldQuery)
+    }
+    find = function (id, table = null) {
+        return this.supabase
+            .from(table || env.subabaseDefaultTable)
+            .select()
+            .eq("id", id)
     }
 }
 
