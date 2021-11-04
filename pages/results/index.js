@@ -1,9 +1,9 @@
 import { FiSearch } from 'react-icons/fi';
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { useEffect, useState } from 'react';
-import Spinner from './../../components/Spinner';
-import SupabaseService from './../../services/Supabase.service';
+import MeiliSearchService from './../../services/MeiliSearch.service';
+import TableItem from '../../components/TableItem';
+import { getUrlSearchQuery } from './../../helpers/functions'
 
 const Result = () => {
     const router = useRouter()
@@ -12,14 +12,17 @@ const Result = () => {
 
     const handleInputChange = (e) => {
         setItems(null)
-        setSearchQuery(e.target.value.trim())
+        setSearchQuery(e.target.value)
     }
-    const search = async (query) => {
-      const service = new SupabaseService()
+    const search = async (query, redurect = false) => {
+      const service = new MeiliSearchService()
       setItems(null)
       try {
-          const result = await service.search(query, 'id, name, logo, tagLine, website', 'name, tagLine, description, specialties, type')
-          setItems(result.data)
+          const result = await service.search(query)
+          if (result.hits && result.hits.length == 1 && redurect) {
+              router.push(`/results/${result.hits[0].id}`)
+          }
+          setItems(result.hits || [])
       } catch (error) {
           setItems([])
           console.log({error})
@@ -31,12 +34,12 @@ const Result = () => {
 
     }
     useEffect(() => {
-        setSearchQuery(router.query.s || '')
-        if (router.query.s && router.query.s !== '')
-          search(router.query.s)
+        setSearchQuery(getUrlSearchQuery())
+        if (getUrlSearchQuery())
+          search(getUrlSearchQuery(), true)
     }, [])
     useEffect(() => {
-        const delayDebounceFn = setTimeout(handleSearch, 1000)
+        const delayDebounceFn = setTimeout(handleSearch, 200)
         return () => clearTimeout(delayDebounceFn)
       }, [searchQuery])
     return (
@@ -76,72 +79,18 @@ const Result = () => {
                     </div>
                 </div>
             </div>
-            <div className="table-responsive">
-                <table className="card-table table-nowrap table table-sm table-hover">
-                    <thead>
-                        <tr>
-                            <th colSpan="1">Ref</th>
-                            <th colSpan="1">Name</th>
-                            <th colSpan="1">Tag line</th>
-                            <th colSpan="1">website</th>
-                        </tr>
-                    </thead>
-                    {
-                        (items === null) && (
-                            <tr>
-                                <td colSpan="5"> <Spinner /> </td>
-                            </tr>
-                        )
-                    }
-                    {
-                        items && (
-                            <tbody className="fs-base">
-                                {
-                                    items.map((item, index) => (
-                                        <tr key={index}>
-                                            <td className="ref-td">
-                                              <Link href={`/results/${item.id}`}>
-                                                <a>#{item.id}</a>
-                                              </Link>
-                                            </td>
-                                            <td className="limited-td">
-                                                <div className="avatar avatar-xs me-2">
-                                                    <img className="avatar-img rounded-circle"
-                                                        src={item.logo || `https://fakeimg.pl/500x500/282828/eae0d0/?retina=1&text=Default`} alt="Launchday" />
-                                                </div>
-                                                {item.name}
-                                            </td>
-                                            <td>
-                                              <p className="limited-td">{item.tagLine}</p>
-                                            </td>
-                                            <td>
-                                              <p className="limited-td">
-                                                <a target="_blank" href={item.website}>{item.website}</a>
-                                              </p>
-                                            </td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        )
-                    }
-                </table>
-            </div>
+            {
+                items && (
+                    <>
+                        {
+                            items.map((item, index) => (
+                                <TableItem data={item} key={index} onClick={(id) => { router.push(`/results/${id}`) }} />
+                            ))
+                        }
+                    </>
+                )
+            }
           </div>
-          <style>
-            {`
-              .limited-td {
-                max-width: 350px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-              .ref-td {
-                text-decoration: underline;
-                cursor: pointer;
-              }
-            `}
-          </style>
         </>
     )
 }

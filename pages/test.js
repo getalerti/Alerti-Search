@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import SupabaseService from './../services/Supabase.service'
+import MeiliSearchService from '../services/MeiliSearch.service'
 
 class Test extends Component {
 
   constructor(props) {
     super(props);
+    const service = new MeiliSearchService()
+    service.search("fresh").then((fes) => console.log(fes))
   }
 
   showFile = async (e) => {
@@ -13,23 +15,27 @@ class Test extends Component {
     reader.onload = async (e) => {
       const text = (e.target.result)
       const lines = text.split(/\r?\n/);
-      const service = new SupabaseService()
+      const service = new MeiliSearchService()
       const datas = []
+      let id = 1;
       lines.forEach((item, i) => {
         const headers = lines[0].split('§')
         const data = {}
         const cols = item.split('§')
         if (cols.length == 97 && i > 0) {
           headers.forEach((title, x) => {
-            data[title] = cols[x] || "-"
+            if (title === 'id') {
+              data['id'] = id
+              id++
+            } else {
+              data[title] = cols[x] || "-"
+            }
           });
           datas.push(data)
         }
       });
-
-      await service.supabase
-      .from('companies')
-      .insert(datas)
+      console.log({datas})
+      await service.insert(datas)
 
     };
     reader.readAsText(e.target.files[0])
