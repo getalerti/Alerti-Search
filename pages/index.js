@@ -1,43 +1,99 @@
-import { useState } from "react"
+import { FiSearch } from 'react-icons/fi';
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
+import MeiliSearchService from './../services/MeiliSearch.service';
+import TableItem from './../components/TableItem';
+import { getUrlSearchQuery } from './../helpers/functions'
 
-export default function Home() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const router = useRouter()
-
-  const handleSearchKeyup = (e) => {
-    setSearchQuery(e.target.value.trim())
-    if (e.key === 'Enter') {
-      // handleSubmit()
+const Result = () => {
+    const router = useRouter()
+    const [searchQuery, setSearchQuery] = useState()
+    const [items, setItems] = useState([])
+    console.log(process.env)
+    const handleInputChange = (e) => {
+        setItems(null)
+        setSearchQuery(e.target.value)
     }
-  }
-  const handleSubmit = (e = null) => {
-    if (e) e.preventDefault();
-    if (searchQuery === '') return
-    router.push(`/results?s=${searchQuery}`)
-  }
-  return (
-    <>
-      <div className="main-content">
-        <div className="card search-area">
-          <div className="card-body">
-            <div className="col-lg-5 col-md-6 mx-auto w-100">
-              <form onSubmit={handleSubmit} className="mx-auto search-form">
-                <input 
-                value={searchQuery}
-                onChange={handleSearchKeyup}
-                placeholder="Organization, business, place..." 
-                className="search-input form-control" />
-                <button 
-                onClick={handleSubmit}
-                type="button" 
-                className="my-3 px-5 search-btn mx-auto d-block btn" 
-                disabled={searchQuery === ''}>GO</button>
-              </form>
+    const search = async (query, redurect = false) => {
+      const service = new MeiliSearchService()
+      setItems(null)
+      try {
+          const result = await service.search(query)
+          if (result.hits && result.hits.length == 1 && redurect) {
+              router.push(`/results/${result.hits[0].id}`)
+          }
+          setItems(result.hits || [])
+      } catch (error) {
+          setItems([])
+          console.log({error})
+      }
+    }
+    const handleSearch = () => {
+        if (searchQuery === '' || searchQuery.length < 3) return
+        search(searchQuery)
+
+    }
+    useEffect(() => {
+        setSearchQuery(getUrlSearchQuery())
+        if (getUrlSearchQuery())
+          search(getUrlSearchQuery(), true)
+    }, [])
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(handleSearch, 200)
+        return () => clearTimeout(delayDebounceFn)
+      }, [searchQuery])
+    return (
+      <>
+        <div className="col-lg-10 mx-auto p-5">
+            <div className="header">
+                <div className="header-body">
+                    <div className="align-items-center row">
+                        <div className="col">
+                            <h6 className="header-pretitle">Searching for</h6>
+                            <h1 className="header-title text-truncate">{searchQuery || '-'} 
+                            </h1>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div className="card">
+                <div className="card-header">
+                    <div className="align-items-center row">
+                        <div className="col">
+                            <div className="input-group-merge input-group-flush input-group">
+                                <span className="input-group-text">
+                                        <FiSearch />
+                                    </span>
+                                <input
+                                    onChange={handleInputChange}
+                                    value={searchQuery}
+                                    placeholder="Search"
+                                    type="search"
+                                    className="form-control search-box" />
+                                <button
+                                    onClick={handleSearch}
+                                    type="button"
+                                    disabled={items === null}
+                                    className="btn btn-primary btn-sm rounded">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {
+                items && (
+                    <>
+                        {
+                            items.map((item, index) => (
+                                <TableItem data={item} key={index} onClick={(id) => { router.push(`/results/${id}`) }} />
+                            ))
+                        }
+                    </>
+                )
+            }
           </div>
-        </div>
-      </div>
-    </>
-  )
+        </>
+    )
 }
+
+export default Result;

@@ -1,5 +1,13 @@
 
 @import './scss/theme.scss';
+@import './fontawesome/scss/fontawesome.scss';
+@import './fontawesome/scss/regular.scss';
+@import './fontawesome/scss/solid.scss';
+@import './fontawesome/scss/thin.scss';
+@import './fontawesome/scss/light.scss';
+@import './fontawesome/scss/brands.scss';
+@import './fontawesome/scss/duotone.scss';
+@import './fontawesome/scss/v4-shims.scss';
 .search-area .card-body {
     background: rgb(216,68,126);
     background: linear-gradient(45deg, rgba(216,68,126,1) 0%, rgba(241,151,81,1) 100%);
@@ -76,4 +84,7 @@
         flex-direction: column;
         align-items: center;
     }
+  }
+  .search-box {
+    margin-left: 5px !important;
   }

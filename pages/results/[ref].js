@@ -18,6 +18,7 @@ export default () => {
   const [ready, isReady] = useState(false)
   const [item, setItem] = useState(null)
   const router = useRouter()
+  console.log({process: process.env})
 
   useEffect(() => {
     const id = getRouteParam('/results/')
