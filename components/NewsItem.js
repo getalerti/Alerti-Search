@@ -8,8 +8,8 @@ export default ({ title, url, image_url, snippet }) => {
                 </div>
             </div>
                 <div className="ms-n2 col">
+                    <h3>{title}</h3>
                     <div className="small">
-                        <strong>{title}</strong> 
                         {snippet}
                     </div>
                 </div>

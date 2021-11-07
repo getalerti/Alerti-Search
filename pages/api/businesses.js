@@ -15,12 +15,16 @@ export default async function handler(req, res) {
     isSearch = false
   
   let results = []
-  if (isSearch)
+  if (isSearch) {
     results = await service.search(query)
+    results = results.hits
+    console.log(results)
+    results = results.filter(item => item.name.toLocaleUpperCase().indexOf(query.toLocaleUpperCase()) !== -1)
+  }
   else
     results = await service.find(document)
   return res.status(200).json({
     success: true,
-    results: isSearch ? results.hits : results
+    results
   })
 }
