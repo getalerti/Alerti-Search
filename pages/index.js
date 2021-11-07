@@ -1,7 +1,6 @@
 import { FiSearch } from 'react-icons/fi';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import MeiliSearchService from './../services/MeiliSearch.service';
 import TableItem from './../components/TableItem';
 import { getUrlSearchQuery } from './../helpers/functions'
 
@@ -9,23 +8,23 @@ const Result = () => {
     const router = useRouter()
     const [searchQuery, setSearchQuery] = useState()
     const [items, setItems] = useState([])
-    console.log(process.env)
     const handleInputChange = (e) => {
         setItems(null)
         setSearchQuery(e.target.value)
     }
     const search = async (query, redurect = false) => {
-      const service = new MeiliSearchService()
       setItems(null)
       try {
-          const result = await service.search(query)
-          if (result.hits && result.hits.length == 1 && redurect) {
-              router.push(`/results/${result.hits[0].id}`)
+          const {success, results, message} = await (await fetch(`/api/businesses?s=${query}`)).json()
+          if (!success)
+            throw message || 'Unknown error'
+          if (results && results.length == 1 && redurect) {
+              router.push(`/results/${results[0].id}`)
           }
-          setItems(result.hits || [])
+          setItems(results || [])
       } catch (error) {
           setItems([])
-          console.log({error})
+          console.log({searchError: error})
       }
     }
     const handleSearch = () => {

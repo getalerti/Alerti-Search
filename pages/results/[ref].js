@@ -1,25 +1,20 @@
 import { useEffect, useState } from 'react'
-import MeiliSearchService from './../../services/MeiliSearch.service'
 import { getRouteParam } from './../../helpers/functions'
 import { useRouter } from 'next/router'
 import Spinner from './../../components/Spinner';
 import defaultBanner from './../../assets/images/default_banner.png'
 import defaultLogo from './../../assets/images/default_logo.png'
 import { BsLinkedin, 
-  BsFillPeopleFill, 
-  BsFillCalendarDateFill, 
-  BsPeople, 
-  BsFillArrowUpCircleFill, 
-  BsInfoCircleFill, 
-  BsLink } from 'react-icons/bs';
+  BsFillCalendarDateFill} from 'react-icons/bs';
 import CountCard from '../../components/CountCard';
+import NewsItem from '../../components/NewsItem';
 
 export default () => {
   const [ready, isReady] = useState(false)
   const [item, setItem] = useState(null)
+  const [news, setNews] = useState(null)
   const router = useRouter()
-  console.log({process: process.env})
-
+  
   useEffect(() => {
     const id = getRouteParam('/results/')
     if (id && id !== '') {
@@ -38,17 +33,27 @@ export default () => {
     newItem.logo = newItem.logo && newItem.logo != '' ? newItem.logo : default_logo
     newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : '_'
     setItem(newItem)
+    getNews(newItem.name)
   }
 
   const getItem = async (id) => {
-    const service = new MeiliSearchService()
     try {
-      const result = await service.find(id)
-      if (result) {
-        sanitizeItem(result)
-      }
+      const {success, results, message} = await (await fetch(`/api/businesses?document=${id}`)).json()
+      if (!success)
+            throw message || 'Unknown error'
+      sanitizeItem(results)
     } catch (error) {
-        console.log({error})
+        console.log({getItemError: error})
+    }
+  }
+  const getNews = async (query) => {
+    try {
+      const {success, results, message} = await (await fetch(`/api/backlinks?s=${query}`)).json()
+      if (!success)
+            throw message || 'Unknown error'
+      setNews(results)
+    } catch (error) {
+        console.log({getNewsError: error})
     }
   }
   return (
@@ -84,8 +89,8 @@ export default () => {
                         <h6 className="header-pretitle">{ !ready ? '-' : item.industry || '-' }</h6>
                         <h1 className="header-title">
                           { !ready ? '-' : item.name || '-' } 
-                          <a href={ready && (item.website || '#')} target="_blank" className="btn btn-primary btn-sm mx-2">
-                            <BsLink />
+                          <a href={ready && (item.website || '#')} target="_blank" className="btn mx-2">
+                            <i className="fas fa-external-link"></i>
                           </a>
                         </h1>
                     </div>
@@ -104,14 +109,27 @@ export default () => {
                 </div>
             </div>
             <div className="row">
-                <CountCard name="Size" value={ ready && (item.companySize || '-') } icon={BsPeople} />
-                <CountCard name="Followers" value={ ready && (item.followerCount || '-') } icon={BsFillPeopleFill} />
-                <CountCard name="Employees on LinkedIn" value={ ready && (item.employeesOnLinkedIn || '-') } icon={BsLinkedin} />
-                <CountCard name="Average tenure" value={ ready && (item.averageTenure || '-') } icon={BsFillArrowUpCircleFill} />
-                <CountCard name="Growth last 6 months" value={ ready && (item.growth6Mth || '-') } icon={BsInfoCircleFill} />
-                <CountCard name="Growth last year" value={ ready && (item.growth1Yr || '-') } icon={BsInfoCircleFill} />
-                <CountCard name="Growth last 2 years" value={ ready && (item.growth2Yr || '-') } icon={BsInfoCircleFill} />
+                <CountCard name="Size" value={ ready && (item.companySize || '-') } icon="people-carry" />
+                <CountCard name="Followers" value={ ready && (item.followerCount || '-') } icon="users" />
+                <CountCard name="Employees on LinkedIn" value={ ready && (item.employeesOnLinkedIn || '-') } iconType="fab" icon="linkedin" />
+                <CountCard name="Average tenure" value={ ready && (item.averageTenure || '-') } icon="sort-size-up" />
+                <CountCard name="Growth last 6 months" value={ ready && (item.growth6Mth || '-') } icon="info" />
+                <CountCard name="Growth last year" value={ ready && (item.growth1Yr || '-') } icon="info" />
+                <CountCard name="Growth last 2 years" value={ ready && (item.growth2Yr || '-') } icon="info" />
             </div>
+            <div className="card">
+              <div className="card-header">
+                  <h4 className="card-header-title">Latest news</h4>
+              </div>
+              <div className="card-body">
+                  <div className="list-group-flush my-n3 list-group">
+                      { news === null && <Spinner /> }
+                      { news !== null && news.map(({title, snippet, url, image_url}, index) => {
+                        return <NewsItem key={index} title={title} image_url={image_url} snippet={snippet} url={url} />
+                      } ) }
+                  </div>
+              </div>
+          </div>
         </div>
         <div className="col-xl-4 col-12">
             <div className="card">

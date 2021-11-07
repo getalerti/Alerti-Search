@@ -12,8 +12,8 @@ class MeiliSearchService {
                 apiKey: env.meilisearchMasterKey,
             })
             this.meilisearchIndex = this.meilisearchClient.index(env.meilisearchDocument)
-        } catch(eror) {
-            console.log({error})
+        } catch(error) {
+            console.log({MeiliSearchServiceError: error})
         }
     }
     search = function (query) {
