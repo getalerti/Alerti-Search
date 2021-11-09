@@ -5,4 +5,7 @@ export default {
     dataforseo_token:       process.env.NEXT_PUBLIC_DATAFORSEO_TOKEN || '',
     dataforseo_url:         process.env.NEXT_PUBLIC_DATAFORSEO_URL || '',
     authorized_origins:     process.env.NEXT_PUBLIC_AUTHORIZED_ORIGINS || '',
+    diffbot_token:          process.env.NEXT_PUBLIC_DIFFBOT_TOKEN || '',
+    diffbot_url:            process.env.NEXT_PUBLIC_DIFFBOT_URL || '',
+
 }

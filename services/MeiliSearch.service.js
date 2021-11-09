@@ -1,30 +1,30 @@
+
 import { MeiliSearch } from 'meilisearch'
 import env from '../env'
 
 class MeiliSearchService {
-    constructor() {
+    constructor(index = null) {
         if (!env.meilisearchUrl || !env.meilisearchMasterKey) {
             throw 'Empty meilisearch params'
         }
-        try {
-            this.meilisearchClient = new MeiliSearch({
-                host: env.meilisearchUrl,
-                apiKey: env.meilisearchMasterKey,
-            })
-            this.meilisearchIndex = this.meilisearchClient.index(env.meilisearchDocument)
-        } catch(error) {
-            console.log({MeiliSearchServiceError: error})
+        this.headers = new Headers();
+        this.headers.append("X-Meili-Api-Key", env.meilisearchMasterKey);
+        this.headers.append("Content-Type", "application/json");
+        this.basedUrl = `${env.meilisearchUrl}/indexes/${index ? index : env.meilisearchDocument}`;
+    }
+    request = (method, url = '', body = null) => {
+        const requestOptions = {
+            method: method,
+            headers: this.headers,
+            redirect: 'follow'
+        };
+        if (body) {
+            const raw = JSON.stringify(body);
+            requestOptions['body'] = raw
         }
+        return fetch(this.basedUrl + url, requestOptions)
     }
-    search = function (query) {
-        return this.meilisearchIndex.search(query)
-    }
-    insert = function (documents) {
-        return this.meilisearchIndex.addDocuments(documents)
-    }
-    find = async function (id) {
-        return await this.meilisearchIndex.getDocument(id)
-    }
+    
 }
 
 export default MeiliSearchService

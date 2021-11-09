@@ -8,11 +8,15 @@ import { BsLinkedin,
   BsFillCalendarDateFill} from 'react-icons/bs';
 import CountCard from '../../components/CountCard';
 import NewsItem from '../../components/NewsItem';
+import SentimentScore from '../../components/SentimentScore';
+import SentimentTags from '../../components/SentimentTags';
 
 export default () => {
   const [ready, isReady] = useState(false)
   const [item, setItem] = useState(null)
   const [news, setNews] = useState(null)
+  const [totalScore, setTotalScore] = useState(null)
+  const [sentimentTags, setSentimentsTags] = useState(null)
   const router = useRouter()
   
   useEffect(() => {
@@ -26,16 +30,47 @@ export default () => {
   useEffect(() => {
     isReady(item !== null)
   }, [item])
-
+  useEffect(() => {
+    if (news) {
+      getSentimentScore()
+    }
+  }, [news])
   const sanitizeItem = (_item) => {
     const newItem = {..._item}
     newItem.banner = newItem.banner && newItem.banner != '' ? newItem.banner : defaultBanner
     newItem.logo = newItem.logo && newItem.logo != '' ? newItem.logo : default_logo
-    newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : '_'
+    newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : ''
     setItem(newItem)
-    getNews(newItem.name)
+    getNews(newItem.id, newItem.articles, newItem.name)
   }
-
+  const getSentimentScore = async () => {
+    let totalSentimentScore = 0
+    const tags = {}
+    news.forEach(async (item, index) => {
+      const {results} = await (await fetch(`/api/sentiments?url=${item.url}`)).json()
+      const sentimentScore = results.sentiment
+      results.tags.forEach(tag => {
+        const existedTag = tags[tag.label]
+        if (existedTag) {
+          tags[tag.label]['count']++
+          tags[tag.label].score =+ tag.score
+        } else {
+          tags[tag.label] = {
+            count: 1,
+            score: tag.score
+          }
+        }
+      })
+      totalSentimentScore = parseInt(totalSentimentScore) + parseInt(sentimentScore)
+      if (index == news.length - 1) {
+        calculateSentiment(totalSentimentScore / news.length, tags)
+      }
+    })
+  }
+  const calculateSentiment = (totalScore, tags) => {
+    setTotalScore(totalScore * 100)
+    setSentimentsTags(JSON.stringify(tags))
+  }
   const getItem = async (id) => {
     try {
       const {success, results, message} = await (await fetch(`/api/businesses?document=${id}`)).json()
@@ -46,9 +81,13 @@ export default () => {
         console.log({getItemError: error})
     }
   }
-  const getNews = async (query) => {
+  const getNews = async (id, articles, query) => {
     try {
-      const {success, results, message} = await (await fetch(`/api/backlinks?s=${query}`)).json()
+      if (articles) {
+        setNews(articles)
+        return;
+      }
+      const {success, results, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
       if (!success)
             throw message || 'Unknown error'
       setNews(results)
@@ -100,23 +139,16 @@ export default () => {
       </div>
       {/* END HEADER */}
       { /*DETAILS*/ }
-      <div className="row row">
+      <div className="row">
+        {totalScore !== null  && <SentimentScore score={totalScore} />}
+        {sentimentTags !== null  && <SentimentTags tags={sentimentTags} />}
         <div className="col-xl-8 col-12">
-            <div className="card">
+            {/* <div className="card">
                 <div className="card-body">
                   <div  className="mb-3" dangerouslySetInnerHTML={{ __html: !ready ? '-' : item.description || '-'}}>
                   </div>
                 </div>
-            </div>
-            <div className="row">
-                <CountCard name="Size" value={ ready && (item.companySize || '-') } icon="people-carry" />
-                <CountCard name="Followers" value={ ready && (item.followerCount || '-') } icon="users" />
-                <CountCard name="Employees on LinkedIn" value={ ready && (item.employeesOnLinkedIn || '-') } iconType="fab" icon="linkedin" />
-                <CountCard name="Average tenure" value={ ready && (item.averageTenure || '-') } icon="sort-size-up" />
-                <CountCard name="Growth last 6 months" value={ ready && (item.growth6Mth || '-') } icon="info" />
-                <CountCard name="Growth last year" value={ ready && (item.growth1Yr || '-') } icon="info" />
-                <CountCard name="Growth last 2 years" value={ ready && (item.growth2Yr || '-') } icon="info" />
-            </div>
+              </div> */}
             <div className="card">
               <div className="card-header">
                   <h4 className="card-header-title">Latest news</h4>
@@ -132,6 +164,16 @@ export default () => {
           </div>
         </div>
         <div className="col-xl-4 col-12">
+            <div className="row">
+                <CountCard name="Size" value={ ready && (item.companySize || '') } icon="people-carry" />
+                <CountCard name="Followers" value={ ready && (item.followerCount || '') } icon="users" />
+                <CountCard name="Employees on LinkedIn" value={ ready && (item.employeesOnLinkedIn || '') } iconType="fab" icon="linkedin" />
+                <CountCard name="Average tenure" value={ ready && (item.averageTenure || '') } icon="sort-size-up" />
+                <CountCard name="Growth last 6 months" value={ ready && (item.growth6Mth || '') } icon="info" />
+                <CountCard name="Growth last year" value={ ready && (item.growth1Yr || '') } icon="info" />
+                <CountCard name="Growth last 2 years" value={ ready && (item.growth2Yr || '') } icon="info" />
+            </div>
+
             <div className="card">
                 <div className="card-body">
                     <div className="list-group-flush my-n3 list-group">
@@ -167,16 +209,6 @@ export default () => {
                                 </div>
                                 <div className="col-auto">
                                      <BsFillCalendarDateFill /> { ready && (item.founded || '-') }
-                                </div>
-                            </div>
-                        </div>
-                        <div className="list-group-item">
-                            <div className="align-items-center row">
-                                <div className="col">
-                                    <h5 className="mb-0">Total employee count</h5>
-                                </div>
-                                <div className="col-auto">
-                                     { ready && (item.employeesOnLinkedIn || '-') }
                                 </div>
                             </div>
                         </div>

@@ -84,7 +84,7 @@ const Result = () => {
                     <>
                         {
                             items.map((item, index) => (
-                                <TableItem data={item} key={index} onClick={(id) => { router.push(`/results/${id}`) }} />
+                                <TableItem data={item} key={index} onClick={(slug) => { router.push(`/results/${slug}`) }} />
                             ))
                         }
                     </>

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
+import { stringToSlug } from '../helpers/functions';
 import MeiliSearchService from '../services/MeiliSearch.service'
 
 class Test extends Component {
 
   constructor(props) {
     super(props);
-    const service = new MeiliSearchService()
-    service.search("fresh").then((fes) => console.log(fes))
   }
-
   showFile = async (e) => {
     e.preventDefault()
     const reader = new FileReader()
@@ -28,19 +26,19 @@ class Test extends Component {
               data['id'] = id
               id++
             } else {
-              data[title] = cols[x] || "-"
+              data[title] = cols[x] || ""
             }
           });
           datas.push(data)
         }
       });
-      console.log({datas})
-      await service.insert(datas)
-
+      await service.insert(datas.map(item => {
+        item['slug'] = stringToSlug(item.name)
+        return item
+      }))
     };
     reader.readAsText(e.target.files[0])
   }
-
   render = () => {
 
     return (<div>

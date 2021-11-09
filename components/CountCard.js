@@ -1,9 +1,10 @@
 import React from 'react'
 
 export default function CountCard({ name, value, icon = "", iconType }) {
-    console.log({icon})
+    if (value === '' || value === '-')
+        return <></>
     return (
-        <div className="col-xl col-md-6 col-12">
+        <div className="col-12">
             <div className="card">
                 <div className="card-body">
                     <div className="align-items-center row">
