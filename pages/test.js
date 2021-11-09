@@ -32,10 +32,7 @@ class Test extends Component {
           datas.push(data)
         }
       });
-      await service.insert(datas.map(item => {
-        item['slug'] = stringToSlug(item.name)
-        return item
-      }))
+      await (await service.request('PUT', `/documents`, datas)).json()
     };
     reader.readAsText(e.target.files[0])
   }
