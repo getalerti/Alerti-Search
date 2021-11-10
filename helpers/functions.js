@@ -27,8 +27,14 @@ const stringToSlug = (str) => {
 
   return str;
 }
+const diffDaysTimestamps = (newTime, oldTime) => {
+  const difference = newTime - oldTime;
+  const daysDifference = Math.floor(difference/1000/60/60/24);
+  return daysDifference;
+}
 export {
   getRouteParam,
   getUrlSearchQuery,
-  stringToSlug
+  stringToSlug,
+  diffDaysTimestamps
 }

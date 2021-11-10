@@ -26,7 +26,8 @@ export default async function handler(req, res) {
   results = results.tasks[0].result[0].items
   const body = [{
     id,
-    articles: results
+    articles: results,
+    articlesUpdatedAt: Date.now()
   }]
   await (await searchService.request('PUT', `/documents`, body)).json()
   return res.status(200).json({

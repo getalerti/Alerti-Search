@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getRouteParam } from './../../helpers/functions'
+import { diffDaysTimestamps, getRouteParam } from './../../helpers/functions'
 import { useRouter } from 'next/router'
 import Spinner from './../../components/Spinner';
 import defaultBanner from './../../assets/images/default_banner.png'
@@ -41,7 +41,7 @@ export default () => {
     newItem.logo = newItem.logo && newItem.logo != '' ? newItem.logo : default_logo
     newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : ''
     setItem(newItem)
-    getNews(newItem.id, newItem.articles, newItem.name)
+    getNews(newItem.id, newItem.articles, newItem.articlesUpdatedAt || null, newItem.website)
   }
   const getSentimentScore = async () => {
     let totalSentimentScore = 0
@@ -49,6 +49,8 @@ export default () => {
     news.forEach(async (item, index) => {
       const {results} = await (await fetch(`/api/sentiments?url=${item.url}`)).json()
       const sentimentScore = results.sentiment
+      if (!results || !results.tags)
+        return;
       results.tags.forEach(tag => {
         const existedTag = tags[tag.label]
         if (existedTag) {
@@ -81,9 +83,9 @@ export default () => {
         console.log({getItemError: error})
     }
   }
-  const getNews = async (id, articles, query) => {
+  const getNews = async (id, articles, articlesUpdatedAt, query) => {
     try {
-      if (articles) {
+      if (articles && articlesUpdatedAt && diffDaysTimestamps(Date.now(), articlesUpdatedAt) <= 1) {
         setNews(articles)
         return;
       }
