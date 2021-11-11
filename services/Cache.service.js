@@ -2,6 +2,9 @@ import fs from 'fs'
 class CacheService {
     constructor() {
         this.cacheUrl = '.cache/'
+        if (!fs.existsSync(this.cacheUrl)){
+            fs.mkdirSync(this.cacheUrl);
+        }
     }
     save = (key, content) => {
         fs.writeFileSync(this.cacheUrl + key,
