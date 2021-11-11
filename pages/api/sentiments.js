@@ -36,8 +36,11 @@ export default async function handler(req, res) {
       results = null
    else
       results = results.objects[0]
-   
+   try {
       cache.save(new Buffer(url).toString('base64'), JSON.stringify(results))
+   } catch (error) {
+      // TODO
+   }
    return res.status(200).json({
       success: true,
       results
