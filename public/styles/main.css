@@ -52992,4 +52992,72 @@ readers do not read off random characters that represent icons */
 .search-box {
   margin-left: 5px !important;
 }
+
+.modal-custom {
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 999;
+  height: 100vh;
+  background: #fff;
+  padding-top: 0;
+  margin-top: 0;
+  -webkit-box-shadow: -6px 1px 20px 3px #d9d9d9;
+          box-shadow: -6px 1px 20px 3px #d9d9d9;
+}
+
+.custom-modal-content {
+  padding: 20px;
+  height: calc(100vh - 60px);
+  overflow: auto;
+}
+
+.custom-modal-content img {
+  height: auto;
+  max-width: 100%;
+}
+
+.sentiment-score {
+  border: 4px solid #f9fbfd;
+  width: 80%;
+  margin: 10px auto;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 40px;
+}
+
+.sentiment-score h2, .sentiment-score .h2 {
+  font-size: 40px;
+}
+
+.sentiment-tags {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  overflow: auto;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  justify-items: center;
+}
+
+.sentiment-tags .card {
+  min-width: 140px;
+  margin-right: 15px;
+}
+
+.sentiment-tags .text-muted {
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
 /*# sourceMappingURL=main.css.map */

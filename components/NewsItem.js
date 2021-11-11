@@ -1,4 +1,4 @@
-export default ({ title, url, image_url, snippet }) => {
+export default ({ title, image_url, snippet, onClick }) => {
     return (
         <div className="list-group-item">
             <div className="row">
@@ -14,9 +14,9 @@ export default ({ title, url, image_url, snippet }) => {
                     </div>
                 </div>
                 <div className="col col-auto">
-                    <a href={url} target="_blank">
+                    <button onClick={onClick} className="btn btn-link">
                         <i className="fas fa-external-link"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

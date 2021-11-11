@@ -12,7 +12,6 @@
     "@supabase/supabase-js": "^1.25.2",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "ioredis": "^4.28.0",
     "meilisearch": "^0.22.3",
     "next": "^10.0.0",
     "next-compose-plugins": "^2.2.1",

@@ -8,15 +8,15 @@ import { BsLinkedin,
   BsFillCalendarDateFill} from 'react-icons/bs';
 import CountCard from '../../components/CountCard';
 import NewsItem from '../../components/NewsItem';
-import SentimentScore from '../../components/SentimentScore';
-import SentimentTags from '../../components/SentimentTags';
+import ModalArticle from '../../components/ModalArticle';
 
 export default () => {
   const [ready, isReady] = useState(false)
   const [item, setItem] = useState(null)
   const [news, setNews] = useState(null)
-  const [totalScore, setTotalScore] = useState(null)
-  const [sentimentTags, setSentimentsTags] = useState(null)
+  const [shownArticleUrl, setShownArticleUrl] = useState(null)
+  const [shownArticleContent, setShownArticleContent] = useState(null)
+  const [loadingArticle, setLoadingArticle] = useState(false)
   const router = useRouter()
   
   useEffect(() => {
@@ -30,11 +30,19 @@ export default () => {
   useEffect(() => {
     isReady(item !== null)
   }, [item])
-  useEffect(() => {
-    if (news) {
-      getSentimentScore()
+  useEffect(async () => {
+    if (!shownArticleUrl || loadingArticle)
+      return;
+    try {
+      setLoadingArticle(true)
+      const {results} = await (await fetch(`/api/sentiments?url=${shownArticleUrl}`)).json()
+      setShownArticleContent(results)
+      setLoadingArticle(false)
+    } catch (error) {
+      setLoadingArticle(false)
+      console.log({loadingArticleError: error})
     }
-  }, [news])
+  }, [shownArticleUrl])
   const sanitizeItem = (_item) => {
     const newItem = {..._item}
     newItem.banner = newItem.banner && newItem.banner != '' ? newItem.banner : defaultBanner
@@ -42,36 +50,6 @@ export default () => {
     newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : ''
     setItem(newItem)
     getNews(newItem.id, newItem.articles, newItem.articlesUpdatedAt || null, newItem.website)
-  }
-  const getSentimentScore = async () => {
-    let totalSentimentScore = 0
-    const tags = {}
-    news.forEach(async (item, index) => {
-      const {results} = await (await fetch(`/api/sentiments?url=${item.url}`)).json()
-      const sentimentScore = results.sentiment
-      if (!results || !results.tags)
-        return;
-      results.tags.forEach(tag => {
-        const existedTag = tags[tag.label]
-        if (existedTag) {
-          tags[tag.label]['count']++
-          tags[tag.label].score =+ tag.score
-        } else {
-          tags[tag.label] = {
-            count: 1,
-            score: tag.score
-          }
-        }
-      })
-      totalSentimentScore = parseInt(totalSentimentScore) + parseInt(sentimentScore)
-      if (index == news.length - 1) {
-        calculateSentiment(totalSentimentScore / news.length, tags)
-      }
-    })
-  }
-  const calculateSentiment = (totalScore, tags) => {
-    setTotalScore(totalScore * 100)
-    setSentimentsTags(JSON.stringify(tags))
   }
   const getItem = async (id) => {
     try {
@@ -142,8 +120,6 @@ export default () => {
       {/* END HEADER */}
       { /*DETAILS*/ }
       <div className="row">
-        {totalScore !== null  && <SentimentScore score={totalScore} />}
-        {sentimentTags !== null  && <SentimentTags tags={sentimentTags} />}
         <div className="col-xl-8 col-12">
             {/* <div className="card">
                 <div className="card-body">
@@ -159,7 +135,7 @@ export default () => {
                   <div className="list-group-flush my-n3 list-group">
                       { news === null && <Spinner /> }
                       { news !== null && news.map(({title, snippet, url, image_url}, index) => {
-                        return <NewsItem key={index} title={title} image_url={image_url} snippet={snippet} url={url} />
+                        return <NewsItem key={index} title={title} image_url={image_url} snippet={snippet} onClick={() => { setShownArticleUrl(url) }} />
                       } ) }
                   </div>
               </div>
@@ -220,6 +196,21 @@ export default () => {
         </div>
     </div>
     {/* END DETAILS */}
+    {/* MODAL */}
+
+    { shownArticleContent && <ModalArticle 
+          title={shownArticleContent.title} 
+          content={shownArticleContent.html}
+          sentiment={shownArticleContent.sentiment}
+          tags={shownArticleContent.tags}
+          onClose={() => { setShownArticleContent(null) }} /> }
+
+    { loadingArticle && <ModalArticle 
+          title="Loading..." 
+          content="..."
+          onClose={() => {}} /> }
+          
+    {/* END MODAL */}
     </div>
   )
 }
