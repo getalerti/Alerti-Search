@@ -1,7 +1,7 @@
 import fs from 'fs'
 class CacheService {
     constructor() {
-        this.cacheUrl = './tmp/'
+        this.cacheUrl = './.cache/'
         
     }
     save = (key, content) => {
