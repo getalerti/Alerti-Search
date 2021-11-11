@@ -1,7 +1,8 @@
 import fs from 'fs'
+import env from '../env'
 class CacheService {
     constructor() {
-        this.cacheUrl = './tmp/'
+        this.cacheUrl = env.cache_url
         
     }
     save = (key, content) => {

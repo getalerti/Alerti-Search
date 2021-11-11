@@ -9,4 +9,5 @@ export default {
     diffbot_url:            process.env.NEXT_PUBLIC_DIFFBOT_URL || '',
     google_sheet_id:        process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID || '',
     google_api_token:       process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN || '',
+    cache_url:              process.env.NEXT_PUBLIC_CACHE_URL || './tmp/',
 }
