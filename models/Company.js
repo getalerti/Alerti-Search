@@ -111,5 +111,6 @@ export default {
     relatedCompanies27: null, 
     relatedCompanies28: null, 
     relatedCompanies29: null, 
-    relatedCompanies30: null
+    relatedCompanies30: null,
+    socials: null
 }

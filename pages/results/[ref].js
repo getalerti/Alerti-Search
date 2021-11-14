@@ -9,6 +9,7 @@ import { BsLinkedin,
 import CountCard from '../../components/CountCard';
 import NewsItem from '../../components/NewsItem';
 import ModalArticle from '../../components/ModalArticle';
+import SocialNetworks from '../../components/SocialNetworks';
 
 export default () => {
   const [ready, isReady] = useState(false)
@@ -17,6 +18,7 @@ export default () => {
   const [shownArticleUrl, setShownArticleUrl] = useState(null)
   const [shownArticleContent, setShownArticleContent] = useState(null)
   const [loadingArticle, setLoadingArticle] = useState(false)
+  const [socialNetworks, setSocialNetworks] = useState(false)
   const router = useRouter()
   
   useEffect(() => {
@@ -29,6 +31,13 @@ export default () => {
   }, [])
   useEffect(() => {
     isReady(item !== null)
+    if (item) {
+      if (item.socials) {
+        setSocialNetworks(item.socials)
+      } else {
+        getSocials(item.id, item.website)
+      }
+    }
   }, [item])
   useEffect(async () => {
     if (!shownArticleUrl || loadingArticle)
@@ -48,6 +57,9 @@ export default () => {
     newItem.banner = newItem.banner && newItem.banner != '' ? newItem.banner : defaultBanner
     newItem.logo = newItem.logo && newItem.logo != '' ? newItem.logo : default_logo
     newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : ''
+
+    console.log("newItem")
+    console.log(newItem)
     setItem(newItem)
     getNews(newItem.id, newItem.articles, newItem.articlesUpdatedAt || null, newItem.website)
   }
@@ -57,6 +69,16 @@ export default () => {
       if (!success)
             throw message || 'Unknown error'
       sanitizeItem(results)
+    } catch (error) {
+        console.log({getItemError: error})
+    }
+  }
+  const getSocials = async (id, website) => {
+    try {
+      const {success, results, message} = await (await fetch(`/api/social-networks?id=${id}&url=${website}`)).json()
+      if (!success)
+            throw message || 'Unknown error'
+      setSocialNetworks(results)
     } catch (error) {
         console.log({getItemError: error})
     }
@@ -111,6 +133,7 @@ export default () => {
                           <a href={ready && (item.website || '#')} target="_blank" className="btn mx-2">
                             <i className="fas fa-external-link"></i>
                           </a>
+                          <SocialNetworks socialNetworks={socialNetworks} />
                         </h1>
                     </div>
                 </div>
@@ -121,12 +144,6 @@ export default () => {
       { /*DETAILS*/ }
       <div className="row">
         <div className="col-xl-8 col-12">
-            {/* <div className="card">
-                <div className="card-body">
-                  <div  className="mb-3" dangerouslySetInnerHTML={{ __html: !ready ? '-' : item.description || '-'}}>
-                  </div>
-                </div>
-              </div> */}
             <div className="card">
               <div className="card-header">
                   <h4 className="card-header-title">Latest news</h4>
@@ -151,7 +168,6 @@ export default () => {
                 <CountCard name="Growth last year" value={ ready && (item.growth1Yr || '') } icon="info" />
                 <CountCard name="Growth last 2 years" value={ ready && (item.growth2Yr || '') } icon="info" />
             </div>
-
             <div className="card">
                 <div className="card-body">
                     <div className="list-group-flush my-n3 list-group">

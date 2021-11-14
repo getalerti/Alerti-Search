@@ -32,9 +32,27 @@ const diffDaysTimestamps = (newTime, oldTime) => {
   const daysDifference = Math.floor(difference/1000/60/60/24);
   return daysDifference;
 }
+const sanitizeUrl = (url) => {
+  let newUrl = url
+  newUrl = `${newUrl.indexOf('http') === -1 && 'https://'}${newUrl}`
+  return newUrl
+}
+
+const makeid = (prefix) => {
+  const length = 3;
+  let result = '';
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return prefix + '_' + Math.floor(Math.random() * 100) + '.' + result + '.' + Date.now();
+}
 export {
   getRouteParam,
   getUrlSearchQuery,
   stringToSlug,
-  diffDaysTimestamps
+  diffDaysTimestamps,
+  sanitizeUrl,
+  makeid
 }

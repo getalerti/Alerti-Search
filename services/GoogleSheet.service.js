@@ -1,5 +1,5 @@
 import env from '../env'
-import { stringToSlug } from '../helpers/functions'
+import { makeid, stringToSlug } from '../helpers/functions'
 import Company from '../models/Contact'
 
 class GoogleSheetService {
@@ -19,7 +19,7 @@ class GoogleSheetService {
             values.forEach((element, index) => {
                 if (index == 0) return;
                 const companyObj = { ...Company }
-                companyObj['id'] = index
+                companyObj['id'] = makeid('comp')
                 titles.forEach((title, index) => {
                     companyObj[title] = element.values && element.values[index]? (element.values[index].formattedValue || '-') : ''
                 })

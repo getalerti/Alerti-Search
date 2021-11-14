@@ -142,3 +142,31 @@
   white-space: nowrap;
   overflow: hidden;
 }
+.social-networks {
+  display: inline-block;
+  float: right;
+}
+
+.social-networks a {
+  color: #12263f;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.db-sync-container{
+  .card-body {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+img.header-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+.custom-select {
+  text-align: left;
+  * {
+    text-align: left !important;
+  }
+}

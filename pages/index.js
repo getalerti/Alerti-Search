@@ -3,11 +3,13 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import TableItem from './../components/TableItem';
 import { getUrlSearchQuery } from './../helpers/functions'
+import defaultSearchResults from './../helpers/defaultSearchResults.json'
 
 const Result = () => {
     const router = useRouter()
     const [searchQuery, setSearchQuery] = useState()
     const [items, setItems] = useState([])
+    const [firstLoading, setFirstLoading] = useState(true)
     const handleInputChange = (e) => {
         setItems(null)
         setSearchQuery(e.target.value)
@@ -33,6 +35,12 @@ const Result = () => {
 
     }
     useEffect(() => {
+        if (firstLoading) {
+            setItems(defaultSearchResults)
+        }
+    }, [firstLoading])
+    useEffect(() => {
+        setFirstLoading(false)
         setSearchQuery(getUrlSearchQuery())
         if (getUrlSearchQuery())
           search(getUrlSearchQuery(), true)

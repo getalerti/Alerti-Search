@@ -7,6 +7,7 @@ export default {
     authorized_origins:     process.env.NEXT_PUBLIC_AUTHORIZED_ORIGINS || '',
     diffbot_token:          process.env.NEXT_PUBLIC_DIFFBOT_TOKEN || '',
     diffbot_url:            process.env.NEXT_PUBLIC_DIFFBOT_URL || '',
+    diffbot_kg_url:            process.env.NEXT_PUBLIC_DIFFBOT_KG_URL || '',
     google_sheet_id:        process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID || '',
     google_api_token:       process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN || '',
     cache_url:              process.env.NEXT_PUBLIC_CACHE_URL || './tmp/',
