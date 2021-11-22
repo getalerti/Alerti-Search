@@ -53099,4 +53099,46 @@ img.header-img-top {
 .custom-select * {
   text-align: left !important;
 }
+
+.cusotm-modal {
+  position: fixed;
+  right: 0;
+  top: 0;
+  max-width: 100%;
+  width: 400px;
+  padding: 20px;
+  background: white;
+  -webkit-box-shadow: 0 0 20px 1px #96abca;
+          box-shadow: 0 0 20px 1px #96abca;
+  height: 100vh;
+  overflow: auto;
+}
+
+.company-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.company-form .company__fields {
+  height: calc(100vh - 140px);
+  overflow: auto;
+}
+
+.company-form .btn--apply {
+  width: 100%;
+  max-width: 100%;
+}
+
+.company-form label {
+  color: #b3b2b2;
+}
+
+.admin-diffbot--header .col {
+  text-align: center;
+}
 /*# sourceMappingURL=main.css.map */

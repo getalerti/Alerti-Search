@@ -1,7 +1,10 @@
 import DiffbotService from './../../services/Diffbot.service'
 import MeiliSearchService from './../../services/MeiliSearch.service'
+import SupabaseService from './../../services/Supabase.service'
 import cors from './../../security/Cors'
-import diffbotCompanyMapping from '../../helpers/diffbotCompanyMapping';
+import { makeid, stringToSlug } from '../../helpers/functions';
+import env from '../../env';
+import diffbotMapping from '../../mappings/diffbotMapping';
 const defaultImport = async (req) => {
     const company = JSON.parse(req.body) || null;
     if (!company) {
@@ -19,12 +22,32 @@ const diffbotImport = async (req) => {
     const result = await (await service.customQuery(type, industry, city, from, to)).json()
     if (!result.data || !result.data.length)
         throw 'no diffbot results found'
-    result.data.forEach(async (item) => {
-        const company = diffbotCompanyMapping(item)
-        const meiliService = new MeiliSearchService()
-        await (await meiliService.request('POST', '/documents', [company])).json()
-        console.log(`company ${company.name} added!`)
-    });
+    let items = result.data
+    items = items.filter(item => {
+        return item.homepageUri && item.homepageUri !== '' && item.name && item.name !== ''
+    })
+    const done = []
+    const undone = []
+    for (let index = 0; index < items.length; index++) {
+        const element = items[index];
+        const company = diffbotMapping(element)
+        company['id_alerti'] = makeid('cmp')
+        company['slug'] = stringToSlug(element.name)
+        const service = new SupabaseService()
+        const { error } = await service.supabase.from(env.supaBaseTable)
+        .insert([
+            company
+        ])
+        if(!error) {
+            done.push(company)
+        } else {
+            undone.push({...company, error})
+        }
+    }
+    return {
+        done,
+        undone
+    }
 }
 export default async function handler(req, res) {
     await cors(req, res)

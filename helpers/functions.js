@@ -48,11 +48,22 @@ const makeid = (prefix) => {
   }
   return prefix + '_' + Math.floor(Math.random() * 100) + '.' + result + '.' + Date.now();
 }
+
+const postApi = (url, body, method = 'POST') => {
+  var raw = JSON.stringify(body)
+  var requestOptions = {
+    method,
+    body: raw,
+  }
+  return fetch(url, requestOptions)
+}
+
 export {
   getRouteParam,
   getUrlSearchQuery,
   stringToSlug,
   diffDaysTimestamps,
   sanitizeUrl,
-  makeid
+  makeid,
+  postApi
 }

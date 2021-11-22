@@ -15,10 +15,9 @@ export default () => {
   const [ready, isReady] = useState(false)
   const [item, setItem] = useState(null)
   const [news, setNews] = useState(null)
-  const [shownArticleUrl, setShownArticleUrl] = useState(null)
-  const [shownArticleContent, setShownArticleContent] = useState(null)
-  const [loadingArticle, setLoadingArticle] = useState(false)
+  const [toastContent, setToastContent] = useState(null)
   const [socialNetworks, setSocialNetworks] = useState(false)
+  const [sentimentReady, isSentimentReady] = useState(false)
   const router = useRouter()
   
   useEffect(() => {
@@ -39,27 +38,11 @@ export default () => {
       }
     }
   }, [item])
-  useEffect(async () => {
-    if (!shownArticleUrl || loadingArticle)
-      return;
-    try {
-      setLoadingArticle(true)
-      const {results} = await (await fetch(`/api/sentiments?url=${shownArticleUrl}`)).json()
-      setShownArticleContent(results)
-      setLoadingArticle(false)
-    } catch (error) {
-      setLoadingArticle(false)
-      console.log({loadingArticleError: error})
-    }
-  }, [shownArticleUrl])
   const sanitizeItem = (_item) => {
     const newItem = {..._item}
     newItem.banner = newItem.banner && newItem.banner != '' ? newItem.banner : defaultBanner
     newItem.logo = newItem.logo && newItem.logo != '' ? newItem.logo : default_logo
     newItem.description = newItem.description && newItem.description != '' ? newItem.description.replace('\n', '<br />') : ''
-
-    console.log("newItem")
-    console.log(newItem)
     setItem(newItem)
     getNews(newItem.id, newItem.articles, newItem.articlesUpdatedAt || null, newItem.website)
   }
@@ -83,16 +66,19 @@ export default () => {
         console.log({getItemError: error})
     }
   }
-  const getNews = async (id, articles, articlesUpdatedAt, query) => {
+  const getNews = async (id, _articles, articlesUpdatedAt, query) => {
     try {
-      if (articles && articlesUpdatedAt && diffDaysTimestamps(Date.now(), articlesUpdatedAt) <= 1) {
-        setNews(articles)
+      if (_articles && articlesUpdatedAt && diffDaysTimestamps(Date.now(), articlesUpdatedAt) <= 1) {
+        setNews(_articles)
+        isSentimentReady(true)
         return;
       }
-      const {success, results, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
+      const {success, articles, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
       if (!success)
             throw message || 'Unknown error'
-      setNews(results)
+      setNews(articles)
+      await (await fetch(`/api/backlinks?only=sentiment&id=${id}`)).json()
+      isSentimentReady(true)
     } catch (error) {
         console.log({getNewsError: error})
     }
@@ -151,8 +137,8 @@ export default () => {
               <div className="card-body">
                   <div className="list-group-flush my-n3 list-group">
                       { news === null && <Spinner /> }
-                      { news !== null && news.map(({title, snippet, url, image_url}, index) => {
-                        return <NewsItem key={index} title={title} image_url={image_url} snippet={snippet} onClick={() => { setShownArticleUrl(url) }} />
+                      { news !== null && news.map(({title, content, snippet, url, image_url}, index) => {
+                        return <NewsItem key={index} isContentNull={content === null} title={title} image_url={image_url} snippet={snippet} onClick={sentimentReady ? () => { setToastContent(content) } : null} />
                       } ) }
                   </div>
               </div>
@@ -214,17 +200,12 @@ export default () => {
     {/* END DETAILS */}
     {/* MODAL */}
 
-    { shownArticleContent && <ModalArticle 
-          title={shownArticleContent.title} 
-          content={shownArticleContent.html}
-          sentiment={shownArticleContent.sentiment}
-          tags={shownArticleContent.tags}
-          onClose={() => { setShownArticleContent(null) }} /> }
-
-    { loadingArticle && <ModalArticle 
-          title="Loading..." 
-          content="..."
-          onClose={() => {}} /> }
+    { toastContent && <ModalArticle 
+          title={toastContent.title} 
+          content={toastContent.html || toastContent.descriptionHtml}
+          sentiment={toastContent.sentiment}
+          tags={toastContent.tags}
+          onClose={() => { setToastContent(null) }} /> }
           
     {/* END MODAL */}
     </div>

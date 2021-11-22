@@ -1,4 +1,6 @@
-export default ({ title, image_url, snippet, onClick }) => {
+import Spinner from "./Spinner"
+
+export default ({ title, isContentNull, image_url, snippet, onClick }) => {
     return (
         <div className="list-group-item">
             <div className="row">
@@ -14,9 +16,12 @@ export default ({ title, image_url, snippet, onClick }) => {
                     </div>
                 </div>
                 <div className="col col-auto">
-                    <button onClick={onClick} className="btn btn-link">
+                    {
+                    onClick === null && !isContentNull ? <Spinner light={true} /> : <button onClick={onClick} className="btn btn-link">
                         <i className="fas fa-external-link"></i>
                     </button>
+                    }
+                    
                 </div>
             </div>
         </div>

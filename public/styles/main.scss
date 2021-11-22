@@ -170,3 +170,36 @@ img.header-img-top {
     text-align: left !important;
   }
 }
+.cusotm-modal {
+  position: fixed;
+  right: 0;
+  top: 0;
+  max-width: 100%;
+  width: 400px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 0 20px 1px #96abca;
+  height: 100vh;
+  overflow: auto;
+}
+.company-form {
+  display: flex;
+  flex-direction: column;
+  .company__fields {
+    height: calc(100vh - 140px);
+    overflow: auto;
+  }
+  .btn--apply {
+    width: 100%;
+    max-width: 100%;
+  }
+  label {
+    color: #b3b2b2;
+  }
+}
+.admin-diffbot--header {
+  .col {
+    text-align: center;
+  }
+}
+
