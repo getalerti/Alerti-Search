@@ -1,5 +1,5 @@
 export default ({ item, verify, edit, remove }) => {
-    const {name, website, timestamp, logo, is_verified} = item
+    const {name, website, timestamp, logo, source, is_verified} = item
     
     return (
         <tr>
@@ -15,6 +15,7 @@ export default ({ item, verify, edit, remove }) => {
                     className="form-check-input m-auto" />
                 </div>
             </td>
+            <td>{ source }</td>
             <td>
                 <div className="actions-btns">
                     <button onClick={edit} className="btn-rounded-circle btn btn-white mx-2 btn-sm">

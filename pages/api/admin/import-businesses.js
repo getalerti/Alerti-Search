@@ -1,10 +1,12 @@
-import DiffbotService from './../../services/Diffbot.service'
-import MeiliSearchService from './../../services/MeiliSearch.service'
-import SupabaseService from './../../services/Supabase.service'
-import cors from './../../security/Cors'
-import { makeid, stringToSlug } from '../../helpers/functions';
-import env from '../../env';
-import diffbotMapping from '../../mappings/diffbotMapping';
+import DiffbotService from '../../../services/Diffbot.service'
+import MeiliSearchService from '../../../services/MeiliSearch.service'
+import SupabaseService from '../../../services/Supabase.service'
+import AdminCors from '../../../security/AdminCors'
+import { makeid, stringToSlug } from '../../../helpers/functions';
+import diffbotMapping from '../../../mappings/diffbotMapping';
+
+const supabaseService = new SupabaseService()
+
 const defaultImport = async (req) => {
     const company = JSON.parse(req.body) || null;
     if (!company) {
@@ -22,6 +24,7 @@ const diffbotImport = async (req) => {
     const result = await (await service.customQuery(type, industry, city, from, to)).json()
     if (!result.data || !result.data.length)
         throw 'no diffbot results found'
+    await supabaseService.log(req.user, 'DIFFBOT_REQUEST', JSON.stringify({type, industry, city, from, to}))
     let items = result.data
     items = items.filter(item => {
         return item.homepageUri && item.homepageUri !== '' && item.name && item.name !== ''
@@ -33,14 +36,13 @@ const diffbotImport = async (req) => {
         const company = diffbotMapping(element)
         company['id_alerti'] = makeid('cmp')
         company['slug'] = stringToSlug(element.name)
-        const service = new SupabaseService()
-        const { error } = await service.supabase.from(env.supaBaseTable)
-        .insert([
-            company
-        ])
+        company['source'] = 'diffbot'
+        const { error } = await supabaseService
+        .insert(company)
         if(!error) {
             done.push(company)
         } else {
+            await supabaseService.log(req.user, 'ERROR_INSERT_COMPANY', JSON.stringify({company, error}))
             undone.push({...company, error})
         }
     }
@@ -50,7 +52,7 @@ const diffbotImport = async (req) => {
     }
 }
 export default async function handler(req, res) {
-    await cors(req, res)
+    await AdminCors(req, res)
     try {
         const action = req.query.action || 'default'
         if (action === 'default') {
@@ -66,9 +68,12 @@ export default async function handler(req, res) {
                 success: true,
                 results
             })
+        } else {
+            throw 'Technical error'
         }
     } catch(error) {
-        console.log(error)
+        console.log({ImportError: error})
+        await supabaseService.log(req.user, 'ERROR_IMPORT', JSON.stringify({ImportError: error}), null)
         return res.status(409).json({
             success: false,
             error

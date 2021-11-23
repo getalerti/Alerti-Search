@@ -53,7 +53,7 @@ export default function CompanyForm({ company, close, loading, apply }) {
             }
             apply(newCompany)
         } catch (error) {
-            setError(typeof message === 'object' ? JSON.stringify(message) : message)
+            setError(typeof error === 'object' ? JSON.stringify(error) : error)
         }
         
     }
@@ -72,7 +72,7 @@ export default function CompanyForm({ company, close, loading, apply }) {
                     if(key.indexOf('is_') === 0) {
                         return (
                             <div key={key} className="form-check form-switch my-1">
-                                <input type="checkbox" name={key} id={key} defaultValue={company[key]} className="form-check-input" />
+                                <input type="checkbox" name={key} id={key} defaultChecked={company[key] === true} className="form-check-input" />
                                 <label form={key} className="form-check-label">{key.replaceAll('_', ' ')}</label>
                             </div>
                         )

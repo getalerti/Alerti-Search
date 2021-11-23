@@ -4,7 +4,7 @@ import Alert from "../../components/Alert"
 import CompanyForm from "../../components/CompanyForm"
 import CompanyItem from '../../components/CompanyItem'
 import Spinner from "../../components/Spinner"
-import { postApi } from "../../helpers/functions"
+import { authMiddleware, wrapAdminFetch } from "../../helpers/functions"
 
 export default () => {
     const [companies, setCompanies] = useState([])
@@ -15,12 +15,14 @@ export default () => {
     const [success, setSuccess] = useState(null)
     const [displayFilters, setDisplayFilters] = useState(false)
     const [selectedCompany, setSelectedCompany] = useState(null)
+    
+    useEffect(() => { authMiddleware(true) }, [])
 
     const handleSearch = async () => {
         if (searchQuery && searchQuery.length >= 3) {
             setError(null)
             setLoading(true)
-            const {success, results, message} = await (await fetch(`/api/admin/companies?s=${searchQuery}&limit=${limit}`)).json()
+            const {success, results, message} = await (await wrapAdminFetch(`/api/admin/companies?s=${searchQuery}&limit=${limit}`, null, 'GET')).json()
             setLoading(false)
             if (!success) {
                 setError(typeof message === 'object' ? JSON.stringify(message) : message)
@@ -44,7 +46,7 @@ export default () => {
     const verify = async (id, value) => {
         setError(null)
         setLoading(true)
-        const {success, message} = await (await postApi(`/api/admin/companies?id=${id}`, {is_verified: value === true}, 'PUT')).json()
+        const {success, message} = await (await wrapAdminFetch(`/api/admin/companies?id=${id}`, {is_verified: value === true}, 'PUT')).json()
         setLoading(false)
         if (success) {
             handleSearch()
@@ -57,9 +59,9 @@ export default () => {
         setLoading(true)
         let result = {}
         if (company.id)
-            result = await (await postApi(`/api/admin/companies?id=${company.id}`, company, 'PUT')).json()
+            result = await (await wrapAdminFetch(`/api/admin/companies?id=${company.id}`, company, 'PUT')).json()
         else 
-            result = await (await postApi(`/api/admin/companies`, company)).json()
+            result = await (await wrapAdminFetch(`/api/admin/companies`, company)).json()
         
         const {success, message} = result
         setLoading(false)
@@ -74,7 +76,7 @@ export default () => {
         if (!confirm) return;
         setError(null)
         setLoading(true)
-        const {success, message} = await (await postApi(`/api/admin/companies?id=${id}`, null, 'DELETE')).json()
+        const {success, message} = await (await wrapAdminFetch(`/api/admin/companies?id=${id}`, null, 'DELETE')).json()
         setLoading(false)
         if (success) {
             handleSearch()
@@ -137,6 +139,7 @@ export default () => {
                                     <th>Website</th>
                                     <th>Last update</th>
                                     <th>Is verified</th>
+                                    <th>Source</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

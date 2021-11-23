@@ -7,16 +7,18 @@ export default function AdminNavbar() {
             <div className="header-body">
                 <div className="align-items-center row">
                     <div className="col">
-                        <h1 className="header-title">Admin area</h1>
+                        <h1 className="header-title">Companies</h1>
                     </div>
                 </div>
                 <div className="align-items-center row">
                     <div className="col">
                         <div className="header-tabs nav-overflow nav nav-tabs">
-                            <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/companies' && 'active'}`}>Companies</a></div>
+                            <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/companies' && 'active'}`}>Search</a></div>
                             <div className="nav-item"><a href="/admin/diffbot" className={`nav-link ${router.pathname === '/admin/diffbot' && 'active'}`}>Diffbot</a></div>
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/apify' && 'active'}`}>Apify</a></div>
-                            <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/users' && 'active'}`}>Users</a></div>
+                            <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/crunchbase' && 'active'}`}>Crunchbase</a></div>
+                            <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/website' && 'active'}`}>Websites</a></div>
+                            <div className="nav-item"><a href="/admin/users" className={`nav-link ${router.pathname === '/admin/users' && 'active'}`}>Users</a></div>
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/logout' && 'active'}`}>Logout</a></div>
                         </div>
                     </div>

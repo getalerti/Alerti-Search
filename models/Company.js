@@ -68,4 +68,5 @@ export default {
     articles: null,
     id_alerti: null,
     timestamp: null,
+    source: null,
 }

@@ -14,5 +14,6 @@ export default {
     password:               process.env.NEXT_PUBLIC_PASSWORD || 'admin',
     supaBaseUrl:            process.env.NEXT_PUBLIC_SUPABASE_URL || '',
     supaBasePublicKey:      process.env.NEXT_PUBLIC_SUPABASE_KEY || '',
-    supaBaseTable:          process.env.NEXT_PUBLIC_SUPABASE_TABLE || 'companies_dev'
+    supaBaseTable:          process.env.NEXT_PUBLIC_SUPABASE_TABLE || 'dev_companies',
+    supaBaseLogs:           process.env.NEXT_PUBLIC_SUPABASE_LOGS_TABLE || 'dev_logs'
 }

@@ -1,3 +1,5 @@
+import SupabaseService from "../services/Supabase.service";
+
 const getRouteParam = (removedPart) => {
   if (typeof window !== 'undefined') {
     return window.location.pathname.replace(removedPart, '')
@@ -49,13 +51,33 @@ const makeid = (prefix) => {
   return prefix + '_' + Math.floor(Math.random() * 100) + '.' + result + '.' + Date.now();
 }
 
-const postApi = (url, body, method = 'POST') => {
+const wrapAdminFetch = async (url, body, method = 'POST') => {
   var raw = JSON.stringify(body)
+  const headers = new Headers()
+  const service = new SupabaseService()
+  const session = await service.supabase.auth.session()
+  const token = session ? session.access_token : ''
+  headers.set('authorization', `Bearer ${token || ''}`)
   var requestOptions = {
     method,
-    body: raw,
+    headers
   }
+  if (body)
+    requestOptions.body = raw
   return fetch(url, requestOptions)
+}
+
+const authMiddleware = async (force = false) => {
+  if (force) {
+    const session = window.localStorage.getItem('supabase.auth.token')
+    if (!session)
+      window.location.href = '/admin/auth'
+    return;
+  }
+  const service = new SupabaseService()
+  const session = await service.supabase.auth.user()
+  if (!session)
+    window.location.href = '/admin/auth'
 }
 
 export {
@@ -65,5 +87,6 @@ export {
   diffDaysTimestamps,
   sanitizeUrl,
   makeid,
-  postApi
+  wrapAdminFetch,
+  authMiddleware
 }

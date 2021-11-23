@@ -9,7 +9,7 @@ class SupabaseService {
         this.supabase = createClient(env.supaBaseUrl, env.supaBasePublicKey)
     }
     search = function (query, limit) {
-        console.log(limit - 20, limit)
+        console.log(`name`, `%${query}%`, limit)
         return this.supabase
             .from(env.supaBaseTable)
             .select()
@@ -41,6 +41,18 @@ class SupabaseService {
             .from(env.supaBaseTable)
             .delete()
             .match({ id })
+    }
+    log = function (user, operation, inputs = null, request = null) {
+        return this.supabase
+            .from(env.supaBaseLogs)
+            .insert([{ user, operation, inputs, request }])
+    }
+    searchLogs = function (query) {
+        return this.supabase
+            .from(env.supaBaseLogs)
+            .select('id')
+            .eq(`inputs`, query)
+            .range(1, 1)
     }
 }
 

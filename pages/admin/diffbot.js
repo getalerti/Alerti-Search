@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminNavbar from '../../components/AdminNavbar'
 import DiffbotIndistriesSelect from '../../components/DiffbotIndistriesSelect'
 import Spinner from '../../components/Spinner'
 import Select from 'react-select'
 import Alert from '../../components/Alert'
-import { sanitizeUrl } from '../../helpers/functions'
+import { authMiddleware, sanitizeUrl, wrapAdminFetch } from '../../helpers/functions'
 
 export default function Diffbot() {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(null)
+    const [oldRequest, setOldRequest] = useState(false)
     const [error, setError] = useState(null)
     const [selectedIndistry, setSelectedIndistry] = useState('')
     const [selectedCity, setSelectedCity] = useState('')
     const [selectedYear, setSelectedYear] = useState('')
     const [done, setDone] = useState([])
     const [undone, setUndone] = useState([])
+
+    useEffect(() => { authMiddleware() }, [])
 
     const years = () => {
         const from = new Date().getFullYear() - 100
@@ -25,19 +28,32 @@ export default function Diffbot() {
         }
         return list
     }
-    const syncDiffbotCompanies = async () => {
+    const checkHistory = async (inputs) => {
+        const {results} = await (await wrapAdminFetch(`/api/admin/logs?s=${inputs}`, null, 'GET')).json()
+        return results
+    }
+    const syncDiffbotCompanies = async (check = false) => {
         if (loading || selectedIndistry === '' || selectedCity === '' || selectedYear === '') return;
         if (loading)
-        return;
+            return;
         try {
         setLoading(true)
+        setOldRequest(false)
         const from = `${selectedYear}-01-01`
         const to = `${parseInt(selectedYear) + 1}-01-01`
         const industry = selectedIndistry
         const type = 'Organization'
-        const city = selectedCity
+        const city = selectedCity.toLowerCase()
         const query = `?action=diffbot&city=${city}&industry=${industry}&type=${type}&from=${from}&to=${to}`
-        const {success, error, results} = await (await fetch(`/api/import-businesses${query}`)).json()
+        if (check) {
+            const results = await checkHistory(JSON.stringify({type, industry, city, from, to}))
+            if (results) {
+                setLoading(false)
+                setOldRequest(true)
+                return;
+            }
+        }
+        const {success, error, results} = await (await wrapAdminFetch(`/api/admin/import-businesses${query}`, null, 'GET')).json()
         if (!success)
             throw error
         setSuccess("Done 👍")
@@ -52,7 +68,7 @@ export default function Diffbot() {
     return (
         <div className="container">
             <AdminNavbar />
-            <Alert type="warning" message="The companies without a website or a name will be skipped by default" onDelete={null} />
+            <Alert type="info" message="The companies without a website or a name will be skipped by default" onDelete={null} />
             { success && <Alert type="success" message={success} onDelete={() => { setSuccess(null) }} /> }
             { error && <Alert type="danger" message={error} onDelete={() => { setError(null) }} /> }
             <div className="card admin-diffbot--header">
@@ -71,13 +87,35 @@ export default function Diffbot() {
                         <button disabled={loading || selectedIndistry === '' || selectedCity === '' || selectedYear === ''} 
                         type="button" 
                         className="btn btn-primary btn-sm mb-3" 
-                        onClick={syncDiffbotCompanies}>
+                        onClick={() => { syncDiffbotCompanies(true) }}>
                           { loading ? <Spinner light={true} /> : <span><i className="far fa-sync"></i> Import</span>  }
                         </button>
                     </div>
                   </div>
               </div>
+              {
+                  oldRequest && (
+                    <div className="card admin-diffbot--header alert-warning m-4">
+                        <div className="card-body">
+                            This request is already processed, do you want to re-process it again ?
+                            <button disabled={loading || selectedIndistry === '' || selectedCity === '' || selectedYear === ''} 
+                            type="button" 
+                            className="btn bg-white btn-sm mx-3" 
+                            onClick={() => { syncDiffbotCompanies(false) }}>
+                            { loading ? <Spinner light={true} /> : <span><i className="far fa-thumbs-up"></i> Yes</span>  }
+                            </button>
+                            <button 
+                            type="button" 
+                            className="btn bg-white btn-sm mx-3" 
+                            onClick={() => { setOldRequest(false) }}>
+                            { loading ? <Spinner light={true} /> : <span><i className="far fa-thumbs-down"></i> No</span>  }
+                            </button>
+                        </div>
+                    </div>
+                  )
+              }
           </div>
+          <p>{ done.length } companies <span className="badge bg-success">imported</span> - { undone.length } companies <span className="badge bg-danger">not imported</span></p>
           <table className="card-table table-nowrap table table-sm table-hover">
             {
                 done.map(({ name, website}, index) => (

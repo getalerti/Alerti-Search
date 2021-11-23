@@ -33,7 +33,7 @@ class GoogleSheetService {
                     method: 'POST',
                     body: JSON.stringify(company)
                 }
-                await(await fetch('/api/import-businesses', requestOptions)).json()
+                const {success, error, results} = await (await wrapAdminFetch(`/api/admin/import-businesses${query}`, null, 'GET')).json()
             })
         } catch (error) {
             console.log({GoogleSheetServiceError: error})

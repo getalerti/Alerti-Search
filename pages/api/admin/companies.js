@@ -1,5 +1,5 @@
 import Company from "../../../models/Company"
-import Cors from "../../../security/Cors"
+import AdminCors from "../../../security/AdminCors"
 import SupabaseService from "../../../services/Supabase.service"
 const service = new SupabaseService()
 
@@ -25,7 +25,7 @@ const remove = async (id) => {
 }
 
 export default async function handler(req, res) {
-  await Cors(req, res)
+  await AdminCors(req, res)
   const query = req.query.s || ''
   const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 20
   let results = []
@@ -33,7 +33,8 @@ export default async function handler(req, res) {
     switch (req.method) {
       // insert
       case 'POST':
-        const insertResult = await insert(JSON.parse(req.body)) 
+        const insertResult = await insert(JSON.parse(req.body))
+        await service.log(req.user, 'INSERT_COMPANY', JSON.stringify(req.body), null)
         if (insertResult.error) {
           console.log({insertError: insertResult.error})
           throw 'Error inserr'
@@ -57,6 +58,7 @@ export default async function handler(req, res) {
         if (req.query.id === '')
           throw 'Empty id'
         const updateResult = await update(req.query.id, JSON.parse(req.body))
+        await service.log(req.user, 'UPDATE_COMPANY', JSON.stringify(req.body), null)
         if (updateResult.error) {
           console.log({updateError: updateResult.error})
           throw 'Error update'
@@ -68,6 +70,7 @@ export default async function handler(req, res) {
         if (req.query.id === '')
           throw 'Empty id'
         const deleteResult = await remove(req.query.id)
+        await service.log(req.user, 'UPDATE_COMPANY', JSON.stringify({id: req.query.id}), null)
         if (deleteResult.error) {
           console.log({deleteError: deleteResult.error})
           throw 'Error delete'
@@ -77,6 +80,7 @@ export default async function handler(req, res) {
         throw 'Technical error'
     }
   } catch (error) {
+    await service.log(req.user, 'ERROR_COMPANIES', JSON.stringify(error), null)
     return res.status(401).json({
       success: false,
       message: error
