@@ -95,7 +95,14 @@ export default () => {
                 <AdminNavbar />
                 {error && <Alert type="danger" message={error} />}
                 {success && <Alert type="success" message={success} />}
-                <button type="button" className="btn btn-primary mb-2" onClick={() => { setSelectedCompany({}) }}>Add company</button>
+                <div className="align-items-center row mb-4">
+                    <div className="col">
+                        <input placeholder="Linkedin Uri" type="text" className="form-control" />
+                    </div>
+                    <div className="col-auto">
+                        <button type="button" className="btn btn-primary" disabled={loading || true} onClick={() => {  }}>Add company (coming soon)</button>
+                    </div>
+                </div>
                 <div className="card">
                     <div className="card-header">
                         <div className="align-items-center row">

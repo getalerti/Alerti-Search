@@ -47,12 +47,28 @@ class SupabaseService {
             .from(env.supaBaseLogs)
             .insert([{ user, operation, inputs, request }])
     }
-    searchLogs = function (query) {
-        return this.supabase
-            .from(env.supaBaseLogs)
-            .select('id')
+    searchLogs = function (query, operation, exist = false, range = 20) {
+        let queryBuilder = this.supabase.from(env.supaBaseLogs)
+        
+        if (exist && query !== '')
+            queryBuilder = queryBuilder.select('id')
             .eq(`inputs`, query)
+            .eq(`operation`, operation)
             .range(1, 1)
+        
+        if (query !== '' && !exist)
+            queryBuilder = queryBuilder.select()
+            .eq(`inputs`, query)
+            .eq(`operation`, operation)
+            .range(range - 19, range)
+        
+        if (query === '' && !exist)
+            queryBuilder = queryBuilder.select()
+            .eq(`operation`, operation)
+            .range(range - 19, range)
+        
+        return queryBuilder
+
     }
 }
 

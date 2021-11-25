@@ -2,21 +2,24 @@ import AdminCors from "../../../security/AdminCors"
 import SupabaseService from "../../../services/Supabase.service"
 const service = new SupabaseService()
 
-const search = async (query) => {
-  return await service.searchLogs(query)
+const search = async (query, operation, exist, range) => {
+  return await service.searchLogs(query, operation, exist, range)
 }
 
 export default async function handler(req, res) {
   await AdminCors(req, res)
   const query = req.query.s || ''
+  const operation = req.query.operation || null
+  const exist = req.query.exist || false
+  const range = req.query.range || 20
   let results = []
   try {
     switch (req.method) {
       // search
       case 'GET':
-        if (query === '')
+        if (query === '' && !operation)
           throw 'Empty query'
-        const searchResult = await search(query)
+        const searchResult = await search(query, operation, exist, range)
         if (searchResult.error) {
           console.log({searchLogsError: searchResult.error})
           throw 'Error search logs'
