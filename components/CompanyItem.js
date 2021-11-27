@@ -10,7 +10,7 @@ export default ({ item, verify, edit, remove }) => {
             <td>
                 <div className="form-check p-0 m-0 form-switch" style={{ width: 0}}>
                     <input type="checkbox" 
-                    defaultChecked={is_verified === true} 
+                    defaultChecked={is_verified == true} 
                     onClick={verify} 
                     className="form-check-input m-auto" />
                 </div>

@@ -8,13 +8,24 @@ class SupabaseService {
         }
         this.supabase = createClient(env.supaBaseUrl, env.supaBasePublicKey)
     }
-    search = function (query, limit) {
-        console.log(`name`, `%${query}%`, limit)
-        return this.supabase
-            .from(env.supaBaseTable)
-            .select()
+    search = function (query, limit, filters = null) {
+        console.log(parseInt(filters.from), parseInt(filters.to))
+        let queryBuilder = this.supabase
+                .from(env.supaBaseTable)
+                .select()
+        if (query) 
+           queryBuilder = queryBuilder
             .ilike(`name`, `%${query}%`)
+        if (filters && filters.from && filters.to)  
+            queryBuilder = queryBuilder
+                .lt('timestamp', parseInt(filters.to))
+                .gte('timestamp', parseInt(filters.from))
+        if (filters && filters.verified !== undefined)  
+            queryBuilder = queryBuilder
+                .eq('is_verified', filters.verified == true ? 'true' : 'false')
+        return queryBuilder
             .range(limit - 20, limit)
+            .order('timestamp', { ascending: false })
     }
     find = function (id, table) {
         return this.supabase
@@ -25,6 +36,7 @@ class SupabaseService {
     update = function (id, body) {
         delete body.id
         delete body.id_alerti
+        body.timestamp = Date.now()
         return this.supabase
             .from(env.supaBaseTable)
             .update(body)
@@ -32,6 +44,7 @@ class SupabaseService {
     }
     insert = function (body) {
         delete body.id
+        body.timestamp = Date.now()
         return this.supabase
             .from(env.supaBaseTable)
             .insert([body])

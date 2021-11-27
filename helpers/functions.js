@@ -66,7 +66,15 @@ const wrapAdminFetch = async (url, body, method = 'POST') => {
     requestOptions.body = raw
   return fetch(url, requestOptions)
 }
-
+const isValidHttpUrl = (string = '') => {
+  let url
+  try {
+    url = new URL(string)
+    return true
+  } catch (_) {
+    return false;
+  }
+}
 const authMiddleware = async (force = false) => {
   if (force) {
     const session = window.localStorage.getItem('supabase.auth.token')
@@ -88,5 +96,6 @@ export {
   sanitizeUrl,
   makeid,
   wrapAdminFetch,
-  authMiddleware
+  authMiddleware,
+  isValidHttpUrl
 }

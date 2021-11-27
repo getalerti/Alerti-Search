@@ -11,12 +11,14 @@
   "dependencies": {
     "@supabase/supabase-js": "^1.25.2",
     "cors": "^2.8.5",
+    "date-fns": "^2.26.0",
     "dotenv": "^10.0.0",
     "meilisearch": "^0.22.3",
     "next": "^10.0.0",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.8.2",
     "react": "17.0.1",
+    "react-date-range": "^1.4.0",
     "react-dom": "17.0.1",
     "react-icons": "^4.3.1",
     "react-select": "^5.2.1"

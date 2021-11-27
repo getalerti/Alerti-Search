@@ -1,7 +1,11 @@
+import { makeid, stringToSlug } from "../../../helpers/functions"
+import apifyMapping from "../../../mappings/apifyMapping"
 import Company from "../../../models/Company"
 import AdminCors from "../../../security/AdminCors"
+import ApifyService from "../../../services/Apify.service"
 import SupabaseService from "../../../services/Supabase.service"
 const service = new SupabaseService()
+const apifyService = new ApifyService()
 
 const validation = (entity) => {
   Object.keys(entity).forEach(key => {
@@ -9,12 +13,21 @@ const validation = (entity) => {
       throw 'Invalid field' + key
   })
 }
-const search = async (query, limit) => {
-  return await service.search(query, limit)
+const search = async (query, limit, filters) => {
+    return await service.search(query, limit, filters)
 }
-const insert = async (body) => {
-  validation(body)
-  return await service.insert(body)
+const insert = async (url, session) => {
+  const result = await (await apifyService.addLinkedinCompany(url, session)).json()
+  if (result.length && result[0].companyUrl) {
+    const company = apifyMapping(result[0]) || {}
+    if (!company.name || !company.website)
+      throw 'invalid company name or webiste'
+    company.id_alerti = makeid('cmp_')
+    company.slug = stringToSlug(company.name)
+    company.source = 'apify'
+    return await service.insert(company)
+  }
+  throw 'technical error'
 }
 const update = async (id, body) => {
   validation(body)
@@ -26,14 +39,16 @@ const remove = async (id) => {
 
 export default async function handler(req, res) {
   await AdminCors(req, res)
-  const query = req.query.s || ''
+  const { s, from, to, verified} = req.query
   const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 20
   let results = []
   try {
     switch (req.method) {
       // insert
       case 'POST':
-        const insertResult = await insert(JSON.parse(req.body))
+        const { pageUrl, session } = JSON.parse(req.body)
+        if (!pageUrl || !session) throw 'Invalid page Url or session'
+        const insertResult = await insert(pageUrl, session)
         await service.log(req.user, 'INSERT_COMPANY', JSON.stringify(req.body), null)
         if (insertResult.error) {
           console.log({insertError: insertResult.error})
@@ -43,9 +58,9 @@ export default async function handler(req, res) {
 
       // search
       case 'GET':
-        if (query === '')
+        if (!s && !from && !to && !verified)
           throw 'Empty query'
-        const searchResult = await search(query, limit)
+        const searchResult = await search(s, limit, {from, to, verified})
         if (searchResult.error) {
           console.log({searchError: searchResult.error})
           throw 'Error search'
@@ -83,7 +98,7 @@ export default async function handler(req, res) {
     await service.log(req.user, 'ERROR_COMPANIES', JSON.stringify(error), null)
     return res.status(401).json({
       success: false,
-      message: error
+      message: error + ''
     })
   }
   return res.status(200).json({
