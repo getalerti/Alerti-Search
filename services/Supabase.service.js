@@ -9,7 +9,6 @@ class SupabaseService {
         this.supabase = createClient(env.supaBaseUrl, env.supaBasePublicKey)
     }
     search = function (query, limit, filters = null) {
-        console.log(parseInt(filters.from), parseInt(filters.to))
         let queryBuilder = this.supabase
                 .from(env.supaBaseTable)
                 .select()
@@ -26,6 +25,14 @@ class SupabaseService {
         return queryBuilder
             .range(limit - 20, limit)
             .order('timestamp', { ascending: false })
+    }
+    unSyncronizedItems = async (maxID) => {
+        return this.supabase
+                .from(env.supaBaseTable)
+                .select()
+                .gte('id', maxID)
+                .match({ is_verified: true })
+                .range(1, 1000)
     }
     find = function (id, table) {
         return this.supabase

@@ -19,6 +19,7 @@ export default function AdminNavbar() {
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/crunchbase' && 'active'}`}>Crunchbase</a></div>
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/website' && 'active'}`}>Websites</a></div>
                             <div className="nav-item"><a href="/admin/users" className={`nav-link ${router.pathname === '/admin/users' && 'active'}`}>Users</a></div>
+                            <div className="nav-item"><a href="/admin/meilisearch" className={`nav-link ${router.pathname === '/admin/meilisearch' && 'active'}`}>Meilisearch</a></div>
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/logout' && 'active'}`}>Logout</a></div>
                         </div>
                     </div>

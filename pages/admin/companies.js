@@ -5,7 +5,7 @@ import CompanyForm from "../../components/CompanyForm"
 import CompanyItem from '../../components/CompanyItem'
 import DatePicker from "../../components/DatePicker"
 import Spinner from "../../components/Spinner"
-import { authMiddleware, wrapAdminFetch } from "../../helpers/functions"
+import { authMiddleware, isValidHttpUrl, wrapAdminFetch } from "../../helpers/functions"
 
 export default () => {
     const [companies, setCompanies] = useState([])
@@ -24,6 +24,7 @@ export default () => {
     const [dateRangeFilter, setDateRangeFilter] = useState(null)
     const [dateRangeFilterFrom, setDateRangeFilterFrom] = useState('')
     const [dateRangeFilterTo, setDateRangeFilterTo] = useState('')
+    const [mode, setMode] = useState('SEARCH')
     
     useEffect(() => { 
         authMiddleware(true)
@@ -70,10 +71,13 @@ export default () => {
         const to = dateRangeFilterTo ? '&to='+dateRangeFilterTo : ''
         const isVerified = '&verified=' + (verifiedFilterInput.current.checked === true ? 'true' : 'false')
         const query = `&${from}${to}${isVerified}`
+        setMode('FILTRE')
         getCompanies(null, query)
+        setDisplayFilters(false)
     }
     const handleSearch = async () => {
         try {
+            setMode('SEARCH')
             if (searchQuery && searchQuery.length >= 3) {
                 getCompanies(searchQuery, '', limit)
             } else {
@@ -85,11 +89,12 @@ export default () => {
         }
     }
     const paging = (step) => {
-        const newLimit = limit + (step * 20)
-        if (companies.length <= 20 || loading || newLimit <= 20)
+        if (loading) return
+        if (step === 1 && companies.length <= 20)
             return
-        setLimit(page + (step * 20))
-        handleSearch()
+        const newLimit = limit + (step * 20)
+        if (newLimit < 0) return;
+        setLimit(newLimit)
     }
     const verify = async (id, value) => {
         try {
@@ -115,7 +120,7 @@ export default () => {
             if (company.id)
                 result = await (await wrapAdminFetch(`/api/admin/companies?id=${company.id}`, company, 'PUT')).json()
             else {
-                if(!companyPage || !sessionInput.current.value) 
+                if(!isValidHttpUrl(companyPage) || !sessionInput.current.value) 
                     throw 'Params invalid'
                 result = await (await wrapAdminFetch(`/api/admin/companies`, { 
                     pageUrl:  companyPage,
@@ -153,6 +158,11 @@ export default () => {
         const delayDebounceFn = setTimeout(handleSearch, 500)
         return () => clearTimeout(delayDebounceFn)
       }, [searchQuery])
+
+      useEffect(() => {
+            if (mode === 'SEARCH') handleSearch()
+            if (mode === 'FILTRE') applyFilters()
+        }, [limit])
     return (
         <>
             <div className="container">
