@@ -29,8 +29,8 @@ export default () => {
     useEffect(() => { 
         authMiddleware(true)
         getLinkedingSession() 
+        init()
     }, [])
-
     useEffect(() => {
         if (
             dateRangeFilter
@@ -43,7 +43,19 @@ export default () => {
             setDateRangeFilterTo(to.getTime())
         }
     }, [dateRangeFilter])
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(handleSearch, 500)
+        return () => clearTimeout(delayDebounceFn)
+      }, [searchQuery])
 
+    useEffect(() => {
+        if (mode === 'SEARCH') handleSearch()
+        if (mode === 'FILTRE') applyFilters()
+    }, [limit])
+    const init = () => {
+        const isVerified = '&verified=' + (verifiedFilterInput.current.checked === true ? 'true' : 'false')
+        getCompanies(null, isVerified)
+    }
     const getLinkedingSession = () => {
         if (typeof window === "undefined")
             return null
@@ -156,15 +168,6 @@ export default () => {
             setError(typeof message === 'object' ? JSON.stringify(message) : message)
         }  
     }
-    useEffect(() => {
-        const delayDebounceFn = setTimeout(handleSearch, 500)
-        return () => clearTimeout(delayDebounceFn)
-      }, [searchQuery])
-
-      useEffect(() => {
-            if (mode === 'SEARCH') handleSearch()
-            if (mode === 'FILTRE') applyFilters()
-        }, [limit])
     return (
         <>
             <div className="container">
