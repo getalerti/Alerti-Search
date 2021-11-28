@@ -1,6 +1,11 @@
+import { useEffect, useState } from "react"
+
 export default ({ item, verify, edit, remove }) => {
     const {name, website, timestamp, logo, source, is_verified} = item
-    
+    const [verifed, setVerified] = useState(is_verified == true)
+    useEffect(() => {
+        setVerified(is_verified == true)
+    }, [item])
     return (
         <tr>
             <td><img style={{ width: '25px', height: '25px' }} src={logo} /></td>
@@ -10,8 +15,8 @@ export default ({ item, verify, edit, remove }) => {
             <td>
                 <div className="form-check p-0 m-0 form-switch" style={{ width: 0}}>
                     <input type="checkbox" 
-                    defaultChecked={is_verified == true} 
-                    onClick={verify} 
+                    checked={verifed} 
+                    onChange={verify} 
                     className="form-check-input m-auto" />
                 </div>
             </td>

@@ -21,7 +21,7 @@ class SupabaseService {
                 .gte('timestamp', parseInt(filters.from))
         if (filters && filters.verified !== undefined)  
             queryBuilder = queryBuilder
-                .eq('is_verified', filters.verified == true ? 'true' : 'false')
+                .eq('is_verified', (filters.verified == true || filters.verified == 'true') ? true : false)
         return queryBuilder
             .range(limit - 20, limit)
             .order('timestamp', { ascending: false })

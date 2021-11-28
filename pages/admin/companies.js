@@ -53,6 +53,7 @@ export default () => {
         return session
     }
     const getCompanies = async (searchQuery, withFilters = '') => {
+        setCompanyPage([])
         setError(null)
         setLoading(true)
         const {success, results, message} = await (await wrapAdminFetch(`/api/admin/companies?${searchQuery ? ('s='+searchQuery) : ''}${withFilters}&limit=${limit}`, null, 'GET')).json()
@@ -103,7 +104,8 @@ export default () => {
             const {success, message} = await (await wrapAdminFetch(`/api/admin/companies?id=${id}`, {is_verified: value === true, verification_date: value === true ? Date.now() : null}, 'PUT')).json()
             setLoading(false)
             if (success) {
-                handleSearch()
+                if (mode === 'SEARCH') handleSearch()
+                if (mode === 'FILTRE') applyFilters()
             }
             if (!success) {
                 setError(typeof message === 'object' ? JSON.stringify(message) : message)
