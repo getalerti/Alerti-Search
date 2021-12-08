@@ -40,6 +40,7 @@ const Result = () => {
         }
     }, [firstLoading])
     useEffect(() => {
+        location.href = '/genious-communications'
         setFirstLoading(false)
         setSearchQuery(getUrlSearchQuery())
         if (getUrlSearchQuery())

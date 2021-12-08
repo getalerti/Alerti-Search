@@ -30,6 +30,34 @@ class ApifyService {
           }
           return fetch(url, requestOptions)
     }
+
+    tweets = (twitterUri) => {
+        const url = this.apifyActorUrl('vdrmota~twitter-scraper')
+        var raw = JSON.stringify(
+            {
+                searchMode: 'live',
+                mode: 'own',
+                tweetsDesired: 12,
+                addUserInfo: true,
+                startUrls: [
+                    {
+                        url: twitterUri,
+                        method: 'GET'
+                    }
+                ],
+                proxyConfig: {
+                    useApifyProxy: true
+                },
+                debugLog: false
+            })
+          var requestOptions = {
+            method: 'POST',
+            headers: this.headers,
+            body: raw,
+            redirect: 'follow'
+          }
+          return fetch(url, requestOptions)
+    }
 }
 
 export default ApifyService

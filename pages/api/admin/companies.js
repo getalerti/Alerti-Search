@@ -16,8 +16,16 @@ const validation = (entity) => {
 const search = async (query, limit, filters) => {
     return await service.search(query, limit, filters)
 }
-const insert = async (url, session) => {
+const insert = async (url, session, company = null) => {
   const result = await (await apifyService.addLinkedinCompany(url, session)).json()
+  if (company) {
+    if (!company.name || !company.website)
+      throw 'invalid company name or webiste'
+    company.id_alerti = makeid('cmp_')
+    company.slug = stringToSlug(company.name)
+    company.source = 'apify'
+    return await service.insert(company)
+  }
   if (result.length && result[0].companyUrl) {
     const company = apifyMapping(result[0]) || {}
     if (!company.name || !company.website)
@@ -46,13 +54,13 @@ export default async function handler(req, res) {
     switch (req.method) {
       // insert
       case 'POST':
-        const { pageUrl, session } = JSON.parse(req.body)
-        if (!pageUrl || !session) throw 'Invalid page Url or session'
-        const insertResult = await insert(pageUrl, session)
+        const { pageUrl, session, company } = JSON.parse(req.body)
+        if (!company && (!pageUrl || !session)) throw 'Invalid page Url or session'
+        const insertResult = await insert(pageUrl, session, company)
         await service.log(req.user, 'INSERT_COMPANY', JSON.stringify(req.body), null)
         if (insertResult.error) {
           console.log({insertError: insertResult.error})
-          throw 'Error inserr'
+          throw insertResult.error
         }
         break;
 

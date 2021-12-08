@@ -19,7 +19,7 @@ class DataforseoService {
               'keyword': encodeURI(query),
               'location_code': location_code,
               'language_code': lang,
-              'depth': 10
+              'depth': 12
             }
           ])
           var requestOptions = {

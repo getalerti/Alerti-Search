@@ -26,12 +26,11 @@ class SupabaseService {
             .range(limit - 20, limit)
             .order('timestamp', { ascending: false })
     }
-    unSyncronizedItems = async (maxID) => {
+    unSyncronizedItems = async () => {
         return this.supabase
                 .from(env.supaBaseTable)
                 .select()
-                .gte('id', maxID)
-                .match({ is_verified: true })
+                .match({ is_verified: true, syncronized: false })
                 .range(1, 1000)
     }
     find = function (id, table) {
