@@ -5,37 +5,20 @@ const service = new SupabaseService()
 const meilisearchService = new MeilisearchService()
 
 const sync = async () => {
-    // get the last meilisearch id
-    const results = await (await meilisearchService.request('POST',
-    `/search`, 
-    {
-     limit: 1,
-     attributesToRetrieve: [
-       'id'
-     ],
-     sort: [
-       'id:desc'
-     ]
-    })).json()
-    if (results.hits) {
-      const lastID = (results.hits.length && results.hits[0].id) ? results.hits[0].id : 0
-      // get records from supabase where id gte meilsearch id
-      const unSyncResult = await service.unSyncronizedItems(lastID)
-      if (!unSyncResult.error) {
-        const items = unSyncResult.data
-        const companiesNames = []
-        for (let index = 0; index < items.length; index++) {
-          const item = items[index];
-          await (await meilisearchService.request('POST', '/documents', [item])).json()
-          companiesNames.push(item.name)
-        }
-        return companiesNames
-      } else {
-        throw unSyncResult.error
-      }
-    } else {
-      throw 'Technical error'
+  const unSyncResult = await service.unSyncronizedItems()
+  if (!unSyncResult.error) {
+    const items = unSyncResult.data
+    const companiesNames = []
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index];
+      await (await meilisearchService.request('POST', '/documents', [item])).json()
+      await service.update(item.id, {syncronized: true})
+      companiesNames.push(item.name)
     }
+    return companiesNames
+  } else {
+    throw unSyncResult.error
+  }
 }
 
 export default async function handler(req, res) {

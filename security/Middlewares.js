@@ -35,7 +35,7 @@ const initMiddleware = (middleware) => {
       new Promise((resolve, reject) => {
         // check origins
         if(!isOriginAuthorized(req.headers.host))
-          return reject(result)
+          return reject("unauthorized")
         
         middleware(req, res, (result) => {
           if (result instanceof Error) {

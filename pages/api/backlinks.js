@@ -46,6 +46,8 @@ export default async function handler(req, res) {
             message: 'Empty query'
           })
   let results = await (await service.request(query, lang, location)).json()
+
+  console.log({tasks: results.tasks})
   if (!results || !results.tasks || !results.tasks[0].result[0].items) {
     return res.status(201).json({
             success: false,

@@ -27,8 +27,9 @@ export default async function handler(req, res) {
     const body = {
       q: document,
     }
+
     results = await (await service.request('POST', `/search`, body)).json()
-    results = results.hits.filter(item => item.slug == document)[0]
+    results = results.hits.filter(item => item.slug == document)[0] || []
   }
   return res.status(200).json({
     success: true,

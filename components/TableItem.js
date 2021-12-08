@@ -1,18 +1,18 @@
 import React from 'react'
 import { BsFillPeopleFill } from 'react-icons/bs';
+import Company from '../models/Company';
 
 export default function TableItem({ data, onClick }) {
-    const { logo, name, slug, tagLine, industry, followerCount } = data
+    const { logo, name, slug, moto, summary, linkedin_follower_count } = data
     return (
-        <div className="table-item mb-5 p-4" onClick={() => { onClick(slug) }}>
-            <img src={logo} alt={name} />
+        <div className="table-item mb-1 px-4" onClick={() => { onClick(slug) }}>
+            <img src={logo} alt={name}
+            onError={(e)=>{e.target.onerror = null; e.target.classList.add("unfound-logo") }} />
             <div className="table-item__group">
                 <h3>{name}</h3>
-                <p>{tagLine}</p>
-                <span>{industry}</span>
             </div>
             <div className="table-item__counts">
-                {followerCount} <BsFillPeopleFill />
+                {linkedin_follower_count} <BsFillPeopleFill />
             </div>
         </div>
     )

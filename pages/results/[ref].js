@@ -74,7 +74,7 @@ export default () => {
         return;
       }
       const {success, articles, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
-      if (!success)
+      if (!success) 
             throw message || 'Unknown error'
       setNews(articles)
       await (await fetch(`/api/backlinks?only=sentiment&id=${id}`)).json()

@@ -1,4 +1,3 @@
-import Company from "../../../models/Company"
 import Cors from "../../../security/Cors"
 import SupabaseService from "../../../services/Supabase.service"
 const service = new SupabaseService()
