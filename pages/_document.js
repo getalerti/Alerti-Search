@@ -10,7 +10,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="stylesheet" href="/styles/main.css" />
+          <link rel="stylesheet" href={`/styles/main.css?timestamp=${Date.now()}`} />
         </Head>
         <body>
           <Main />
