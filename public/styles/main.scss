@@ -215,3 +215,7 @@ img.header-img-top {
 .btn {
   border-color: $blue;
 }
+.alert {
+  max-height: 200px;
+  overflow: auto;
+}

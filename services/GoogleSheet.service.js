@@ -17,6 +17,26 @@ class GoogleSheetService {
             const { sheets } = await (await fetch(this.customUrl(spreadsheetID))).json()
             const values = sheets[0].data[0].rowData
             const titles = values[0].values.map(value => value.formattedValue)
+            const titlesObs = {
+                verified: false
+            }
+            titles.forEach(title => {
+                if (title !== undefined && title !== "undefined")
+                    titlesObs[title] = ''
+            })
+            return {
+                titles: titlesObs,
+            }
+        } catch (error) {
+            console.log({GoogleSheetServiceError: error})
+            throw JSON.stringify(error)
+        }
+    }
+    getCompanies = async (spreadsheetID) => {
+        try {
+            const { sheets } = await (await fetch(this.customUrl(spreadsheetID))).json()
+            const values = sheets[0].data[0].rowData
+            const titles = values[0].values.map(value => value.formattedValue)
             const companies = []
             values.forEach((element, index) => {
                 if (index == 0) return;
@@ -25,15 +45,8 @@ class GoogleSheetService {
                     company[title] = element.values && element.values[index]? (element.values[index].formattedValue || null) : null
                 })
                 companies.push(company)
-            })
-            const titlesObs = {}
-            titles.forEach(title => {
-                titlesObs[title] = ''
-            })
-            return {
-                titles: titlesObs,
-                companies
-            }
+            }) 
+            return companies
         } catch (error) {
             console.log({GoogleSheetServiceError: error})
             throw JSON.stringify(error)

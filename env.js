@@ -17,5 +17,7 @@ export default {
     supaBaseTable:          process.env.NEXT_PUBLIC_SUPABASE_TABLE || 'dev_companies',
     supaBaseLogs:           process.env.NEXT_PUBLIC_SUPABASE_LOGS_TABLE || 'dev_logs',
     apify_url:              process.env.NEXT_PUBLIC_APIFY_URL || 'https://api.apify.com/v2/acts/',
-    apify_token:            process.env.NEXT_PUBLIC_APIFY_TOKEN || ''
+    apify_token:            process.env.NEXT_PUBLIC_APIFY_TOKEN || '',
+    alerti_leads_url:       process.env.NEXT_PUBLIC_ALERTI_LEADS_URL || '',
+    alerti_leads_api_key:   process.env.NEXT_PUBLIC_ALERTI_LEADS_API_KEY || '',
 }

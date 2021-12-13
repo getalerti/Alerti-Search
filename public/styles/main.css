@@ -20,7 +20,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- :root {
+:root {
   --bs-blue: #32274D;
   --bs-indigo: #727cf5;
   --bs-purple: #6b5eae;
@@ -53571,4 +53571,9 @@ img.header-img-top {
 .btn {
   border-color: #32274D;
 }
-/*# sourceMappingURL=main.css.map */ 
+
+.alert {
+  max-height: 200px;
+  overflow: auto;
+}
+/*# sourceMappingURL=main.css.map */

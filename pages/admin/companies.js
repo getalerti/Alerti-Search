@@ -258,6 +258,7 @@ export default () => {
                                         return <CompanyItem 
                                                 key={index} 
                                                 item={company} 
+                                                update={apply}
                                                 verify={() => { verify(company.id, !company.is_verified) }} 
                                                 edit={() => { setSelectedCompany(company) }} 
                                                 remove={() => { remove(company.id) }}  />

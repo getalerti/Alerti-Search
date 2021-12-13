@@ -3,9 +3,11 @@ import apifyMapping from "../../../mappings/apifyMapping"
 import Company from "../../../models/Company"
 import AdminCors from "../../../security/AdminCors"
 import ApifyService from "../../../services/Apify.service"
+import GoogleSheetService from "../../../services/GoogleSheet.service"
 import SupabaseService from "../../../services/Supabase.service"
 const service = new SupabaseService()
 const apifyService = new ApifyService()
+const googleService = new GoogleSheetService()
 
 const validation = (entity) => {
   Object.keys(entity).forEach(key => {
@@ -44,6 +46,28 @@ const update = async (id, body) => {
 const remove = async (id) => {
   return await service.remove(id)
 }
+const spreadsheetInsert = async (mapping, spreadsheetId) => {
+  const companies = await googleService.getCompanies(spreadsheetId)
+  const done = []
+  for (let index = 0; index < companies.length; index++) {
+    const _company = companies[index];
+    const company = {}
+    Object.keys(_company).forEach(key => {
+        const index = mapping[key]
+        if (index !== '') {
+            company[index] = _company[key]
+        }
+    })
+    if (company.name){
+      company.id_alerti = makeid('cmp_')
+      company.slug = stringToSlug(company.name)
+      company.source = 'googleSpreadsheet'
+      await service.insert(company)
+      done.push(company.name)
+    }
+  }
+  return done
+}
 
 export default async function handler(req, res) {
   await AdminCors(req, res)
@@ -54,7 +78,12 @@ export default async function handler(req, res) {
     switch (req.method) {
       // insert
       case 'POST':
-        const { pageUrl, session, company } = JSON.parse(req.body)
+        const { pageUrl, session, company, source, mapping, spreadsheetId } = JSON.parse(req.body)
+        if (source === 'spreadsheet' && mapping && spreadsheetId) {
+          results = await spreadsheetInsert(mapping, spreadsheetId)
+          await service.log(req.user, 'SPREADSHEET_INSERT_COMPANY', JSON.stringify(req.body), null)
+          break;
+        }
         if (!company && (!pageUrl || !session)) throw 'Invalid page Url or session'
         const insertResult = await insert(pageUrl, session, company)
         await service.log(req.user, 'INSERT_COMPANY', JSON.stringify(req.body), null)

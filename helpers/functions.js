@@ -1,3 +1,4 @@
+import Company from "../models/Company";
 import SupabaseService from "../services/Supabase.service";
 
 const getRouteParam = (removedPart) => {
@@ -35,9 +36,20 @@ const diffDaysTimestamps = (newTime, oldTime) => {
   return daysDifference;
 }
 const sanitizeUrl = (url) => {
-  let newUrl = url
+  let newUrl = url || ""
   newUrl = `${newUrl.indexOf('http') === -1 && 'https://'}${newUrl}`
   return newUrl
+}
+
+const getCompanyFromObject = (obj) => {
+  const keys = Object.keys(obj)
+  const company = {}
+  keys.forEach(key => {
+    if(Object.keys(Company).indexOf(key) != -1) {
+      company[key] = obj[key]
+    }
+  })
+  return company
 }
 
 const makeid = (prefix) => {
@@ -97,5 +109,6 @@ export {
   makeid,
   wrapAdminFetch,
   authMiddleware,
-  isValidHttpUrl
+  isValidHttpUrl,
+  getCompanyFromObject
 }

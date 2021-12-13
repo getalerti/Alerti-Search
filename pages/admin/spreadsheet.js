@@ -3,7 +3,7 @@ import AdminNavbar from '../../components/AdminNavbar'
 import Alert from '../../components/Alert'
 import Spinner from '../../components/Spinner'
 import Company from '../../models/Company'
-import { authMiddleware, makeid, stringToSlug, wrapAdminFetch } from '../../helpers/functions'
+import { authMiddleware, wrapAdminFetch } from '../../helpers/functions'
 import GoogleSheetService from '../../services/GoogleSheet.service'
 const spreadsheetService = new GoogleSheetService()
 
@@ -15,25 +15,9 @@ export default function spreadsheet() {
     const [success, setSuccess] = useState(null)
     const [spreadsheetID, setSpreadsheetID] = useState('')
     const [spreedsheetTitles, setSpreedsheetTitles] = useState([])
-    const [spreedsheetCompany, setSpreedsheetCompany] = useState({})
     const [addedCompanies, setAddedCompanies] = useState([])
     const [notAddedCompanies, setNotAddedCompanies] = useState([])
-
-    const addCompany = async (company) => {
-        if (!company.name || company.name === '')
-                throw `The name is empty`
-        const result = await (await wrapAdminFetch(`/api/admin/companies`, { 
-            pageUrl:  '',
-            session: '',
-            company
-        })).json()
-        const {success, message} = result
-        if (success) {
-            setAddedCompanies([...addedCompanies, company.name])
-        } else {
-            setNotAddedCompanies([...notAddedCompanies, company.name + `(${message})`])
-        }
-    }
+    
     useEffect(() => {
         if (addedCompanies.length)
             setSuccess(addedCompanies.join(' - '))
@@ -44,16 +28,16 @@ export default function spreadsheet() {
     const save = async () => {
         setLoading(true)
         try {
-            for (let index = 0; index < spreedsheetCompany.length; index++) {
-                const _company = spreedsheetCompany[index];
-                const company = {}
-                Object.keys(_company).forEach(key => {
-                    const index = spreedsheetTitles[key]
-                    if (index !== '') {
-                        company[index] = _company[key]
-                    }
-                })
-                await addCompany(company)
+            const { success, results, message} = await (await wrapAdminFetch(`/api/admin/companies`, { 
+                source: 'spreadsheet',
+                mapping: spreedsheetTitles,
+                spreadsheetId: spreadsheetID
+            })).json()
+            if (success) {
+                setSuccess(results.join(' - '))
+                setSpreedsheetTitles([])
+            } else {
+                throw message
             }
             setLoading(false)
 
@@ -63,13 +47,11 @@ export default function spreadsheet() {
         }
     }
 
-
     const mapping = (title, key) => {
         if (key === '-')
             return;
         const cloneSpreedsheetCompany = {...spreedsheetTitles}
         cloneSpreedsheetCompany[title] = key;
-        console.log(cloneSpreedsheetCompany)
         setSpreedsheetTitles({
             ...cloneSpreedsheetCompany
         })
@@ -79,9 +61,9 @@ export default function spreadsheet() {
         if (spreadsheetID === '')
             return;
         setLoading(true)
+        setSpreedsheetTitles([])
         try {
-            const { titles, companies } = await spreadsheetService.getTitles(spreadsheetID)
-            setSpreedsheetCompany(companies)
+            const { titles } = await spreadsheetService.getTitles(spreadsheetID)
             setSpreedsheetTitles(titles)
             setLoading(false)
         } catch (error) {
@@ -111,35 +93,39 @@ export default function spreadsheet() {
                 </div>
                 <div className="card p-4">
                     {
-                        Object.keys(spreedsheetTitles).map((title, index) => (
-                            <div className="form-group d-flex align-items-center justify-content-between" key={index}>
-                                <label className="form-label mx-2">{title}</label>
-                                <select className="form-control mx-2" 
-                                style={{ width: 300 }}
-                                onChange={(e) => { mapping(title, e.target.value) }}>
-                                    <option value={'-'}>-</option>
+                        Object.keys(spreedsheetTitles).map((title, index) =>{
+                            if (title === 'verified') {
+                                return (
+                                    <div className="form-group d-flex align-items-center justify-content-between" key={index}>
+                                        <label className="form-label mx-2">Verified</label>
+                                        <div className="form-check p-0 m-0 form-switch">
+                                            <input type="checkbox" 
+                                            onChange={(e) => { mapping('verified', e.target.checked) }}
+                                            className="form-check-input m-auto" />
+                                        </div>
 
-                                    {
-                                        Object.keys(Company).sort().map((key, index) => (
-                                            <option key={index} value={key}>{key}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-                        ))
-                    }
-                    {
-                        Object.keys(spreedsheetTitles).length ? <div className="form-group d-flex align-items-center justify-content-between">
-                                                <label className="form-label mx-2">Verified</label>
-                                                <div className="form-check p-0 m-0 form-switch">
-                                                    <input type="checkbox" 
-                                                    onChange={(e) => { mapping('verifed', e.target.checked) }}
-                                                    className="form-check-input m-auto" />
-                                                </div>
+                                    </div>
+                                )
+                            } else {
+                                return (
+                                    <div className="form-group d-flex align-items-center justify-content-between" key={index}>
+                                        <label className="form-label mx-2">{title}</label>
+                                        <select className="form-control mx-2" 
+                                        style={{ width: 300 }}
+                                        onChange={(e) => { mapping(title, e.target.value) }}>
+                                            <option value={'-'}>-</option>
 
-                                            </div> : ''
+                                            {
+                                                Object.keys(Company).sort().map((key, index) => (
+                                                    <option key={index} value={key}>{key}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                )
+                            }
+                        })
                     }
-                    
                     {
                         Object.keys(spreedsheetTitles).length ? <button type="button" className="btn btn-white"
                             disabled={loading} 
