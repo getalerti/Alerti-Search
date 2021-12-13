@@ -3,8 +3,8 @@ import { getCompanyFromObject, isValidHttpUrl, sanitizeUrl } from "../helpers/fu
 import AlertiLeadsService from "../services/AlertiLeads.service"
 import Spinner from "./Spinner"
 
-export default ({ item, verify, edit, remove, update }) => {
-    const {name, website, timestamp, logo, source, is_verified} = item
+export default ({ item, verify, edit, remove, update, setError }) => {
+    const {id, name, website, timestamp, logo, source, is_verified} = item
     const [verifed, setVerified] = useState(is_verified == true)
     const [loading, isLoading] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
@@ -21,8 +21,11 @@ export default ({ item, verify, edit, remove, update }) => {
             isLoading(true);
             const { data } = await service.retrieveSocialMedia(url); 
             const company = getCompanyFromObject(data)
-            console.log({company})
+            company.id = id
+            update(company)
         } catch (error) {
+            setError('Technical Error')
+            console.log({loadSocialMediaError: error})
             isLoading(false); 
         }
 

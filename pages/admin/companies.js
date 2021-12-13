@@ -257,7 +257,8 @@ export default () => {
                                     companies.map((company, index) => {
                                         return <CompanyItem 
                                                 key={index} 
-                                                item={company} 
+                                                item={company}
+                                                setError={setError} 
                                                 update={apply}
                                                 verify={() => { verify(company.id, !company.is_verified) }} 
                                                 edit={() => { setSelectedCompany(company) }} 
