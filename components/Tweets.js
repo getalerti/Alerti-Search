@@ -16,12 +16,12 @@ export default function Tweets() {
           console.log({_tweets})
             // return;
           }
-          const tweets = await (await fetch(`/api/tweets?s=${query}&id=${id}`)).json()
+          // const tweets = await (await fetch(`/api/tweets?s=${query}&id=${id}`)).json()
           console.log({tweets})
           if (tweets.error) 
                 throw message || 'Unknown error'
             // setTweetsFeed(tweets)
-          await (await fetch(`/api/backlinks?only=sentiment&id=${id}`)).json()
+          // await (await fetch(`/api/backlinks?only=sentiment&id=${id}`)).json()
         } catch (error) {
             console.log({getTweetsError: error})
         }
@@ -41,36 +41,93 @@ export default function Tweets() {
             </div>
 
             <div className="row mt-3 p-0">
-            { tweetsFeed === null ? <Spinner light={true} /> : tweetsFeed.map(({ url, user, full_text, created_at}, index) => (
-                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" 
-                    key={index}
-                    style={{ display: (index > showCount - 1 ? 'none' : 'flex') }}>
-                    <a href={url} target="_blank">
-                    <img className="card-img-top card-img-top" src={user.profile_banner_url} alt="..." /></a>
+            {/* tweetsFeed === null ? <Spinner light={true} /> : tweetsFeed.map(({ url, user, full_text, created_at}, index) => (
+                
+            )
+            ) */}
+            <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
+                    <a href={'#'} target="_blank">
+                    <img className="card-img-top card-img-top" src={"https://dashkit-react.vercel.app/img/avatars/projects/project-1.jpg"} alt="..." /></a>
                     <div className="card-body my-0 py-0 px-0 mx-0">
                         <div className="align-items-center row">
                             <div className="col">
                                 <div className="align-items-center row py-3">
                                     <div className="col-auto">
-                                        <div className="avatar"><img className="avatar-img rounded-circle" src={user.profile_image_url_https}
-                                                alt="..." /></div>
+                                        <div className="avatar">
+                                            <img className="avatar-img rounded-circle" src={"https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"}
+                                                alt="..." />
+                                        </div>
                                     </div>
                                     <div className="col">
                                         <p className="twitter-username mb-0">
-                                            <b>@{user.screen_name}</b> <br />
-                                            {new Date(Date(created_at)).toLocaleString()}
+                                            <b>@youssame</b> <br />
+                                            November 25, 2021
                                         </p>
                                     </div>
                                 </div>
                                 <p className="mb-0">
-                                    {full_text}
+                                    This week's #StartPageChallenge: use Start Page to link to all the aspects of your business. You could link to your Amazon shop, your latest album release, or your virtual tip jar. The possibilities are endless! 🌈
                                 </p>
                             </div>
                         </div>
                     </div>
-                </div>
-            )
-            )}
+            </div>
+
+            <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
+                    <a href={'#'} target="_blank">
+                    <img className="card-img-top card-img-top" src={"https://dashkit-react.vercel.app/img/avatars/projects/project-1.jpg"} alt="..." /></a>
+                    <div className="card-body my-0 py-0 px-0 mx-0">
+                        <div className="align-items-center row">
+                            <div className="col">
+                                <div className="align-items-center row py-3">
+                                    <div className="col-auto">
+                                        <div className="avatar">
+                                            <img className="avatar-img rounded-circle" src={"https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"}
+                                                alt="..." />
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <p className="twitter-username mb-0">
+                                            <b>@youssame</b> <br />
+                                            November 25, 2021
+                                        </p>
+                                    </div>
+                                </div>
+                                <p className="mb-0">
+                                    This week's #StartPageChallenge: use Start Page to link to all the aspects of your business. You could link to your Amazon shop, your latest album release, or your virtual tip jar. The possibilities are endless! 🌈
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
+                    <a href={'#'} target="_blank">
+                    <img className="card-img-top card-img-top" src={"https://dashkit-react.vercel.app/img/avatars/projects/project-1.jpg"} alt="..." /></a>
+                    <div className="card-body my-0 py-0 px-0 mx-0">
+                        <div className="align-items-center row">
+                            <div className="col">
+                                <div className="align-items-center row py-3">
+                                    <div className="col-auto">
+                                        <div className="avatar">
+                                            <img className="avatar-img rounded-circle" src={"https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"}
+                                                alt="..." />
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <p className="twitter-username mb-0">
+                                            <b>@youssame</b> <br />
+                                            November 25, 2021
+                                        </p>
+                                    </div>
+                                </div>
+                                <p className="mb-0">
+                                    This week's #StartPageChallenge: use Start Page to link to all the aspects of your business. You could link to your Amazon shop, your latest album release, or your virtual tip jar. The possibilities are endless! 🌈
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
                 
             </div>
             <button type="button"

@@ -99,7 +99,9 @@ const authMiddleware = async (force = false) => {
   if (!session)
     window.location.href = '/admin/auth'
 }
-
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 export {
   getRouteParam,
   getUrlSearchQuery,
@@ -110,5 +112,6 @@ export {
   wrapAdminFetch,
   authMiddleware,
   isValidHttpUrl,
-  getCompanyFromObject
+  getCompanyFromObject,
+  sleep
 }

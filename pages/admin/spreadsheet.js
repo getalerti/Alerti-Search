@@ -5,7 +5,6 @@ import Spinner from '../../components/Spinner'
 import Company from '../../models/Company'
 import { authMiddleware, wrapAdminFetch } from '../../helpers/functions'
 import GoogleSheetService from '../../services/GoogleSheet.service'
-const spreadsheetService = new GoogleSheetService()
 
 export default function spreadsheet() {
     useEffect(() => { authMiddleware() }, [])
@@ -34,7 +33,8 @@ export default function spreadsheet() {
                 spreadsheetId: spreadsheetID
             })).json()
             if (success) {
-                setSuccess(results.join(' - '))
+                setAddedCompanies(results.done)
+                setNotAddedCompanies(results.undone)
                 setSpreedsheetTitles([])
             } else {
                 throw message
@@ -63,8 +63,13 @@ export default function spreadsheet() {
         setLoading(true)
         setSpreedsheetTitles([])
         try {
-            const { titles } = await spreadsheetService.getTitles(spreadsheetID)
-            setSpreedsheetTitles(titles)
+            const { results} = await (await wrapAdminFetch(`/api/admin/companies`, { 
+                source: 'spreadsheet',
+                mapping: spreedsheetTitles,
+                spreadsheetId: spreadsheetID,
+                onlyTitles: true
+            })).json()
+            setSpreedsheetTitles(results.titles)
             setLoading(false)
         } catch (error) {
             setError(typeof error === "object" ? JSON.stringify(error) : error)

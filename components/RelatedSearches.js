@@ -14,7 +14,7 @@ export default function RelatedSearches() {
                         <div className="align-items-center row py-3 company-mini-profile">
                             <div className="col-auto">
                                 <div className="avatar">
-                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"
+                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-1.jpg"
                                         alt="..." />
                                     </div>
                             </div>
@@ -44,7 +44,7 @@ export default function RelatedSearches() {
                         <div className="align-items-center row py-3 company-mini-profile">
                             <div className="col-auto">
                                 <div className="avatar">
-                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"
+                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-2.jpg"
                                         alt="..." />
                                     </div>
                             </div>
@@ -75,7 +75,7 @@ export default function RelatedSearches() {
                         <div className="align-items-center row py-3 company-mini-profile">
                             <div className="col-auto">
                                 <div className="avatar">
-                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"
+                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-3.jpg"
                                         alt="..." />
                                     </div>
                             </div>
@@ -105,7 +105,7 @@ export default function RelatedSearches() {
                         <div className="align-items-center row py-3 company-mini-profile">
                             <div className="col-auto">
                                 <div className="avatar">
-                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"
+                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-4.jpg"
                                         alt="..." />
                                     </div>
                             </div>
@@ -133,7 +133,7 @@ export default function RelatedSearches() {
                         <div className="align-items-center row py-3 company-mini-profile">
                             <div className="col-auto">
                                 <div className="avatar">
-                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"
+                                    <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-5.jpg"
                                         alt="..." />
                                     </div>
                             </div>

@@ -1,10 +1,29 @@
-+ Integration Design
-+ Import CSV dans l'admin
-+ MAJ : Linkedin, leads.alerti.com (Réseaux sociaux) 
-+ Radar t oUser manager
+--- DONE
++ Import CSV dans l'admin (add props + import file getlatka)
++ import openvc csv
 
-+ Alexa
-+ similarweb
-+ Blog
-+ dataforseo
-+ googlemybusiness
+
+--- IN PROGRESS
++ lancer Linkedin sur tout les orgs
+
+--- TODO
++ MAJ la page (mettre les infos manquants en dure)
++ MAJ : Récupérer profils sociaux, eamil et tél à partir du nom de domaine et API leads.alerti.com(
++ social networks dans menu
+    + google business profile
+    + Facebook
+    + Twitter
+    + Youtube
+    + Instagram
+    + Github
+    + Reddit
+    + Dribble
+    + Pinterst
+
++ Metrics
+    + Alexa
+    + similarweb
+    + dataforseo
+
+
+

@@ -5,10 +5,11 @@ const mapping = {
     telephone: "phone",
     tagLine: "motto",
     followerCount: "linkedin_follower_count",
-    website: "website",
+    // website: "website",
+    description: "description",
     siegeSocial: "location_address",
     fondeeEn: "founded_date",
-    // companyNameLinkedin: Octoly,
+    companyNameLinkedin: "name",
     banner: "banner",
     logo: "logo",
     companyUrl: "linkedIn_url",
@@ -23,7 +24,8 @@ export default (element) => {
             value = typeof value === 'object' ? JSON.stringify(value) : value
             if (mapp === 'industries' && value && value !== '')
                 value = JSON.stringify([value])
-            newElement[mapp] = value
+            if (value && value !== '')
+                newElement[mapp] = value
         }
     })
     

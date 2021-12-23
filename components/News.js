@@ -15,7 +15,7 @@ export default function News() {
             setNewsFeed(_articles)
             return;
           }
-          const {success, articles, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
+          // const {success, articles, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
           if (!success) 
                 throw message || 'Unknown error'
                 setNewsFeed(articles)
@@ -32,7 +32,7 @@ export default function News() {
     useEffect(() => {
         console.log(company)
         if (company && company.website) { 
-            getNews(company.id, company.articles, company.articlesUpdatedAt, company.website)
+            // getNews(company.id, company.articles, company.articlesUpdatedAt, company.website)
         }
     }, [company])
 
@@ -47,12 +47,25 @@ export default function News() {
                     <span className="px-2"><i className="fas fa-sync-alt"></i> Refresh</span>
                 </h3>
             </div>
-            { authors.length > 0 && <div className="avatars-group slide pt-3">
-                {
+            { /* authors.length > 0 && */ <div className="avatars-group slide pt-3">
+                { /*
                     authors.map(({ avatar_url, name, link }, index) => 
                         <img class="avatar-img rounded-circle" src={avatar_url} alt={name} title={name} key={index} />
                     )
+                    */
                 }
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-2.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-3.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-2.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-3.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-2.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-3.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-2.jpg'} alt={'name'} title={'name'} />
+                <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-3.jpg'} alt={'name'} title={'name'} />
             </div>}
             
             <div className="panel__title d-flex justify-content-between mt-5 pt-5">
@@ -61,7 +74,7 @@ export default function News() {
                 </h2>
             </div>
             <div className="row mt-3 p-0">
-                { newsFeed === null ? <Spinner light={true} /> : newsFeed.map(({image_url, url, title, snippet, timestamp}, index) => (
+                {/* newsFeed === null ? <Spinner light={true} /> : newsFeed.map(({image_url, url, title, snippet, timestamp}, index) => (
                     <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" 
                             key={index}
                             style={{ display: (index > showCount - 1 ? 'none' : 'flex') }}>
@@ -82,7 +95,63 @@ export default function News() {
                             </div>
                         </div>
                     </div>
-                )) }
+                )) */}
+                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" >
+                    <a href={'#'} target="_blank"><img className="card-img-top card-img-top" src={'https://dashkit-react.vercel.app/img/kanban/kanban-2.jpg'} alt="..." /></a>
+                    <div className="card-body px-0 mx-0">
+                        <div className="align-items-center mb-4 row">
+                            <div className="col">
+                                <h4 className="mb-2">
+                                    {'5 apps for scheduling Instagram posts on iPhone and Android'}
+                                </h4>
+                                <p className="small text-muted">
+                                    {'November 25, 2021'} / <u>Mashable</u>
+                                </p>
+                                <p className="mb-0">
+                                Social media can be a time suck.  <br />These tools make it easier to boost your company’s presence across platforms. <br />Text Style SBody Document
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" >
+                    <a href={'#'} target="_blank"><img className="card-img-top card-img-top" src={'https://dashkit-react.vercel.app/img/kanban/kanban-2.jpg'} alt="..." /></a>
+                    <div className="card-body px-0 mx-0">
+                        <div className="align-items-center mb-4 row">
+                            <div className="col">
+                                <h4 className="mb-2">
+                                    {'5 apps for scheduling Instagram posts on iPhone and Android'}
+                                </h4>
+                                <p className="small text-muted">
+                                    {'November 25, 2021'} / <u>Mashable</u>
+                                </p>
+                                <p className="mb-0">
+                                Social media can be a time suck.  <br />These tools make it easier to boost your company’s presence across platforms. <br />Text Style SBody Document
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" >
+                    <a href={'#'} target="_blank"><img className="card-img-top card-img-top" src={'https://dashkit-react.vercel.app/img/kanban/kanban-2.jpg'} alt="..." /></a>
+                    <div className="card-body px-0 mx-0">
+                        <div className="align-items-center mb-4 row">
+                            <div className="col">
+                                <h4 className="mb-2">
+                                    {'5 apps for scheduling Instagram posts on iPhone and Android'}
+                                </h4>
+                                <p className="small text-muted">
+                                    {'November 25, 2021'} / <u>Mashable</u>
+                                </p>
+                                <p className="mb-0">
+                                Social media can be a time suck.  <br />These tools make it easier to boost your company’s presence across platforms. <br />Text Style SBody Document
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
             </div>
             <button type="button" 

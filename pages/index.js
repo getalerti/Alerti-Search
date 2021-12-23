@@ -40,7 +40,7 @@ const Result = () => {
         }
     }, [firstLoading])
     useEffect(() => {
-        location.href = '/genious-communications'
+        location.href = '//edgeneural-ai-pvt-ltd'
         setFirstLoading(false)
         setSearchQuery(getUrlSearchQuery())
         if (getUrlSearchQuery())

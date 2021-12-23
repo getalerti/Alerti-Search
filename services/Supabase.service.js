@@ -26,6 +26,18 @@ class SupabaseService {
             .range(limit - 20, limit)
             .order('timestamp', { ascending: false })
     }
+
+    segment = function (from, to) {
+        return this.supabase
+                .from(env.supaBaseTable)
+                .select()
+                .range(from, to)
+    }
+    count = function () {
+        return this.supabase
+                .from(env.supaBaseTable)
+                .select('*', { count: 'exact' })
+    }
     unSyncronizedItems = async () => {
         return this.supabase
                 .from(env.supaBaseTable)
@@ -38,6 +50,12 @@ class SupabaseService {
             .from(table)
             .select()
             .eq("id", id)
+    }
+    companyByLinkedinUrl = function (linkedInUrl, table = null) {
+        return this.supabase
+            .from(table || env.supaBaseTable)
+            .select()
+            .ilike("linkedIn_url", `%${linkedInUrl}%`)
     }
     update = function (id, body) {
         delete body.id

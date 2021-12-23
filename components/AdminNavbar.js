@@ -15,7 +15,7 @@ export default function AdminNavbar() {
                         <div className="header-tabs nav-overflow nav nav-tabs">
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/companies' && 'active'}`}>Search</a></div>
                             <div className="nav-item"><a href="/admin/diffbot" className={`nav-link ${router.pathname === '/admin/diffbot' && 'active'}`}>Diffbot</a></div>
-                            <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/linkedin' && 'active'}`}>Linkedin</a></div>
+                            <div className="nav-item"><a href="/admin/linkedin" className={`nav-link ${router.pathname === '/admin/linkedin' && 'active'}`}>Linkedin</a></div>
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/crunchbase' && 'active'}`}>Crunchbase</a></div>
                             <div className="nav-item"><a href="/admin/companies" className={`nav-link ${router.pathname === '/admin/website' && 'active'}`}>Websites</a></div>
                             <div className="nav-item"><a href="/admin/users" className={`nav-link ${router.pathname === '/admin/users' && 'active'}`}>Users</a></div>

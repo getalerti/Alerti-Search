@@ -6,13 +6,16 @@ const meilisearchService = new MeilisearchService()
 
 const sync = async () => {
   const unSyncResult = await service.unSyncronizedItems()
+  console.log({unSyncResult: unSyncResult.data.length})
   if (!unSyncResult.error) {
     const items = unSyncResult.data
     const companiesNames = []
     for (let index = 0; index < items.length; index++) {
-      const item = items[index];
-      await (await meilisearchService.request('POST', '/documents', [item])).json()
+      const item = items[index]
+      if (!item.id) item.id = item.id_alerti
+      await (await meilisearchService.request('PUT', '/documents', [item])).json()
       await service.update(item.id, {syncronized: true})
+      console.log(item.name + ' : syncronized ')
       companiesNames.push(item.name)
     }
     return companiesNames

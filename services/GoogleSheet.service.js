@@ -1,5 +1,5 @@
 import env from '../env'
-import { makeid, stringToSlug } from '../helpers/functions'
+import { makeid, stringToSlug, sleep } from '../helpers/functions'
 import Company from '../models/Contact'
 
 class GoogleSheetService {
@@ -12,11 +12,19 @@ class GoogleSheetService {
     customUrl = (spreadsheetID) => {
         return `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetID}/?key=${env.google_api_token}&includeGridData=true`
     }
+    rowUrl = (spreadsheetID, line) => {
+        return `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetID}/values/${line}:${line}/?key=${env.google_api_token}`
+    }
+    rowsUrl = (spreadsheetID, from, to) => {
+        return `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetID}/values/${from}:${to}/?key=${env.google_api_token}`
+    }
+    titlesUrl = (spreadsheetID) => {
+        return `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetID}/values/1:1/?key=${env.google_api_token}`
+    }
     getTitles = async (spreadsheetID) => {
         try {
-            const { sheets } = await (await fetch(this.customUrl(spreadsheetID))).json()
-            const values = sheets[0].data[0].rowData
-            const titles = values[0].values.map(value => value.formattedValue)
+            const { values } = await (await fetch(this.titlesUrl(spreadsheetID))).json()
+            const titles = values[0]
             const titlesObs = {
                 verified: false
             }
@@ -47,6 +55,73 @@ class GoogleSheetService {
                 companies.push(company)
             }) 
             return companies
+        } catch (error) {
+            console.log({GoogleSheetServiceError: error})
+            throw JSON.stringify(error)
+        }
+    }
+
+    getRow = async (spreadsheetID, row) => {
+        try {
+            let resValues = await (await fetch(this.rowUrl(spreadsheetID, row))).json()
+            let titles = await (await fetch(this.titlesUrl(spreadsheetID))).json()
+            if (titles.error && titles.error.status == 'RESOURCE_EXHAUSTED') {
+                console.log('SLEEP')
+                await sleep(65000)
+                console.log('CONTINUE SLEEP')
+                titles = await (await fetch(this.titlesUrl(spreadsheetID))).json()
+            }
+            if (resValues.error && resValues.error.status == 'RESOURCE_EXHAUSTED') {
+                console.log('SLEEP')
+                await sleep(65000)
+                console.log('CONTINUE')
+                resValues = await (await fetch(this.rowUrl(spreadsheetID, row))).json()
+            }
+            let values = resValues.values
+            if (!values || !values[0])
+                return null
+            values = values[0]
+            titles = titles.values[0]
+            const company = {}
+            values.forEach((element, index) => {
+                company[titles[index]] = element
+            }) 
+            return company
+        } catch (error) {
+            console.log({GoogleSheetServiceError: error})
+            throw JSON.stringify(error)
+        }
+    }
+    getRows = async (spreadsheetID, from, to) => {
+        try {
+            let resValues = await (await fetch(this.rowsUrl(spreadsheetID, from, to))).json()
+            let titles = await (await fetch(this.titlesUrl(spreadsheetID))).json()
+            /* if (titles.error && titles.error.status == 'RESOURCE_EXHAUSTED') {
+                console.log('SLEEP')
+                await sleep(65000)
+                console.log('CONTINUE SLEEP')
+                titles = await (await fetch(this.titlesUrl(spreadsheetID))).json()
+            }
+            if (resValues.error && resValues.error.status == 'RESOURCE_EXHAUSTED') {
+                console.log('SLEEP')
+                await sleep(65000)
+                console.log('CONTINUE')
+                resValues = await (await fetch(this.rowUrl(spreadsheetID, row))).json()
+            } */
+            let values = resValues.values
+            if (!values || !values[0])
+                return null
+            titles = titles.values[0]
+            const companies = []
+            values.forEach(value => {
+                const company = {}
+                value.forEach((element, index) => {
+                    company[titles[index]] = element
+                }) 
+                companies.push(company)
+            })
+            return companies
+            
         } catch (error) {
             console.log({GoogleSheetServiceError: error})
             throw JSON.stringify(error)

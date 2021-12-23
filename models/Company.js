@@ -69,4 +69,18 @@ export default {
     id_alerti: null,
     timestamp: null,
     source: null,
+    age: null,
+    cashflow: null,
+    founderlinkedinUrl: null,
+    funding: null,
+    valuation: null,
+    getlatka_url: null,
+    revenue: null,
+    teamsize: null,
+    countries_of_investment: null,
+    stage_of_investment: null,
+    investor_type: null,
+    first_cheque_minimum: null,
+    first_cheque_maximum: null,
+    syncronized: false
 }

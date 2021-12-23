@@ -89,8 +89,8 @@ export default () => {
             <div className="col-md-9 col-lg-9">
               <div className="page__section mt-5 pt-5">
                 <News />
-                {/* <Tweets />
-                <Videos /> */ }
+                <Tweets />
+                <Videos />
               </div>
             </div>
 
