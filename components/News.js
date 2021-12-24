@@ -13,7 +13,7 @@ export default function News() {
         try {
           if (_articles && articlesUpdatedAt && diffDaysTimestamps(Date.now(), articlesUpdatedAt) <= 1) {
             setNewsFeed(_articles)
-            return;
+            return
           }
           // const {success, articles, message} = await (await fetch(`/api/backlinks?s=${query}&id=${id}`)).json()
           if (!success) 
