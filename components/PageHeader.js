@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../pages/[slug]'
 
 export default function PageHeader() {
@@ -10,14 +10,15 @@ export default function PageHeader() {
             alt={company.name}
             onError={(e)=>{e.target.onerror = null; e.target.classList.add("unfound-banner") }} />
             <div className="container-fluid">
-                <div className="header-body mt-n5">
-                    <div className="align-items-start row px-4">
+                <div className="header-body mt-n5 mt-sm-0">
+                    <div className="align-items-start row px-lg-4 px-md-4 custom--header">
                         <div className="col-auto">
                             <div className="avatar avatar-xxl header-avatar-top">
                                 <img
                                     className="avatar-img rounded-circle" alt=""
                                     src={company.logo}
-                                    onError={(e)=>{e.target.onerror = null; e.target.classList.add("unfound-logo") }} /></div>
+                                    onError={(e)=>{e.target.onerror = null; e.target.classList.add("unfound-logo") }} />
+                            </div>
                         </div>
                         <div className="mb-2 ms-n3 ms-md-n2 col-6 page__infos">
                             <h1 className="header-title">
@@ -25,19 +26,19 @@ export default function PageHeader() {
                                 <span className="mx-3"><i className="fas fa-ellipsis-h"></i></span>
                             </h1>
                             <p className="page__description">
-                            {company.description}
+                            {company.description && company.description.length > 228 ? company.description.substring(0, 228) + '...' : company.description}
                             </p>
                             <p className="page__infos slide">
                                 {company.descriptors && JSON.parse(company.descriptors) ? <span className="mx-1">{ JSON.parse(company.descriptors)[0] }</span> : '' }
                                 {company.location_address ? <span className="mx-1">- { company.location_address }</span> : '' }
-                                {company.nb_employees ? <span className="mx-1">- <i className="fal fa-users"></i> { company.nb_employees } people</span> : '' }
-                                {company.nb_jobs ? <span className="mx-1">- <i className="fal fa-user-md"></i> { company.jobs }</span> : '' }
-        
+                                {company.location_country_name ? <span className="mx-1">- <i className="fal fa-marker"></i> { company.location_country_name } people</span> : '' }
+                                {company.nb_employees ? <span className="mx-1">- <i className="fal fa-users"></i> { company.nb_employees }</span> : '' }
+                                
                             </p>
                             <p className="page__industries slide mb-0">
-                            {company.industries && JSON.parse(company.industries) ?  JSON.parse(company.industries).map((item, index) => {
+                            {company.industries ? company.industries.map((item, index) => {
                                 return <span className="badge" key={index}>{item}</span>
-                            }): '' }
+                            }) : ''}
                             </p>
                         </div>
                         <div className="col page--infos--btns">

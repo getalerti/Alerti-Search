@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { diffDaysTimestamps } from '../helpers/functions'
 import { Context } from '../pages/[slug]'
+import SectionsNav from './SectionsNav'
 import Spinner from './Spinner'
 
-export default function News() {
+export default function News({setActiveNav, activeNav}) {
     const company = useContext(Context)
     const [showCount, setShowCount] = useState(3)
     const [newsFeed, setNewsFeed] = useState(null)
@@ -42,7 +43,7 @@ export default function News() {
                 <h2>
                 39 482 people talk about {company.name}
                 </h2>
-                <h3>
+                <h3 className="d-none d-lg-block d-md-block">
                     Last update : {new Date(Date(company.articlesUpdatedAt)).toLocaleString()}
                     <span className="px-2"><i className="fas fa-sync-alt"></i> Refresh</span>
                 </h3>
@@ -67,13 +68,13 @@ export default function News() {
                 <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-2.jpg'} alt={'name'} title={'name'} />
                 <img class="avatar-img rounded-circle" src={'https://dashkit-react.vercel.app/img/avatars/profiles/avatar-3.jpg'} alt={'name'} title={'name'} />
             </div>}
-            
-            <div className="panel__title d-flex justify-content-between mt-5 pt-5">
+            <SectionsNav activeNav={activeNav} setActiveNav={setActiveNav} />
+            <div className="panel__title d-md-flex d-lg-flex d-none justify-content-between mt-5 pt-5" data-mobile-hide={activeNav !== 'news'}>
                 <h2>
                     News
                 </h2>
             </div>
-            <div className="row mt-3 p-0">
+            <div className="row  mobile-slide mt-3 p-0" data-mobile-hide={activeNav !== 'news'}>
                 {/* newsFeed === null ? <Spinner light={true} /> : newsFeed.map(({image_url, url, title, snippet, timestamp}, index) => (
                     <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" 
                             key={index}
@@ -156,6 +157,7 @@ export default function News() {
             </div>
             <button type="button" 
             className="d-block mx-auto my-3 px-5 lift btn btn-default"
+            data-mobile-hide={activeNav !== 'news'}
             onClick={() => { setShowCount(20) }}>Load more news</button>
         </>
     )

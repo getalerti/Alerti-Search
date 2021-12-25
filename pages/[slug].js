@@ -19,6 +19,7 @@ export const Context = createContext({...Company});
 
 export default () => {
   const [ready, isReady] = useState(false)
+  const [activeNav, setActiveNav] = useState('news')
   const [item, setItem] = useState({...Company})
   const router = useRouter()
 
@@ -44,12 +45,12 @@ export default () => {
     const newItem = {..._item}
     try {
       if (!JSON.parse(newItem.industries) && newItem.industries) {
-        newItem.industries = JSON.stringify([newItem.industries])
+        newItem.industries = [newItem.industries]
       } else {
-        newItem.industries = JSON.stringify([])
+        newItem.industries = []
       }
     } catch (error) {
-      newItem.industries = JSON.stringify([])
+      newItem.industries = newItem.industries ? [newItem.industries] : []
     }
     setItem(newItem)
   }
@@ -65,16 +66,6 @@ export default () => {
         console.log({getItemError: error})
     }
   }
-  const getSocials = async (id, website) => {
-    try {
-      const {success, results, message} = await (await fetch(`/api/social-networks?id=${id}&url=${website}`)).json()
-      if (!success)
-            throw message || 'Unknown error'
-      setSocialNetworks(results)
-    } catch (error) {
-        console.log({getItemError: error})
-    }
-  }
   
   return (
     <Context.Provider value={item}>
@@ -84,18 +75,27 @@ export default () => {
           <PageHeader  />
         </div>
         <div className="container pb-5 mb-5">
+          <div className="row flex-row-reverse">
+            <div className="col-md-3 col-lg-3">
+              <ReputationScore />
+            </div>
+            <div className="col-md-9 col-lg-9">
+              <div className="page__section mt-md-5 pt-md-5 mt-lg-5 pt-lg-5">
+                <News setActiveNav={setActiveNav} activeNav={activeNav} />
+              </div>
+            </div>
+
+          </div>
           <div className="row">
 
             <div className="col-md-9 col-lg-9">
-              <div className="page__section mt-5 pt-5">
-                <News />
-                <Tweets />
-                <Videos />
+              <div className="page__section mt-md-5 pt-md-5 mt-lg-5 pt-lg-5">
+                <Tweets activeNav={activeNav} />
+                <Videos  activeNav={activeNav} />
               </div>
             </div>
 
             <div className="col-md-3 col-lg-3">
-              <ReputationScore />
               <FindContacts />
               <BusinessClients name="buffer" />
               <Financials />
@@ -105,7 +105,7 @@ export default () => {
           </div>
           <RelatedSearches />
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Context.Provider>
    

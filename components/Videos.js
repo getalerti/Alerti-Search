@@ -1,15 +1,15 @@
 import React from 'react'
 
-export default function Videos() {
+export default function Videos({activeNav}) {
     return (
         <>
-            <div className="panel__title d-flex justify-content-between">
+            <div className="panel__title d-md-flex d-lg-flex d-none justify-content-between" data-mobile-hide={activeNav !== 'videos'}>
                 <h2>
                     videos
                 </h2>
             </div>
 
-            <div className="row mt-3 p-0">
+            <div className="row mt-3 p-0 mobile-slide" data-mobile-hide={activeNav !== 'videos'}>
                 
             <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
                     <a href="/project-overview">
@@ -83,7 +83,7 @@ export default function Videos() {
                     </div>
                 </div>
             </div>
-            <button type="button" className="d-block mx-auto px-5 lift btn btn-default">Load more videos</button>
+            <button type="button"  data-mobile-hide={activeNav !== 'videos'} className="d-block mx-auto px-5 lift btn btn-default">Load more videos</button>
         </>
     )
 }

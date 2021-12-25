@@ -3,7 +3,7 @@ import { diffDaysTimestamps, sanitizeUrl } from '../helpers/functions'
 import { Context } from '../pages/[slug]'
 import Spinner from './Spinner'
 
-export default function Tweets() {
+export default function Tweets({activeNav}) {
     const company = useContext(Context)
     const [showCount, setShowCount] = useState(3)
     const [tweetsFeed, setTweetsFeed] = useState(null)
@@ -34,13 +34,13 @@ export default function Tweets() {
     }, [company])
     return (
         <>
-            <div className="panel__title d-flex justify-content-between">
+            <div className="panel__title d-md-flex d-lg-flex d-none justify-content-between" data-mobile-hide={activeNav !== 'tweets'}>
                 <h2>
                     twitter
                 </h2>
             </div>
 
-            <div className="row mt-3 p-0">
+            <div className="row mt-3  mobile-slide p-0" data-mobile-hide={activeNav !== 'tweets'}>
             {/* tweetsFeed === null ? <Spinner light={true} /> : tweetsFeed.map(({ url, user, full_text, created_at}, index) => (
                 
             )
@@ -133,6 +133,7 @@ export default function Tweets() {
             <button type="button"
             onClick={() => { setShowCount(20) }}
             className="d-block mx-auto my-3 px-5 lift btn btn-default"
+            data-mobile-hide={activeNav !== 'tweets'}
              className="d-block mx-auto px-5 lift btn btn-default">Load more tweets</button>
         </>
     )
