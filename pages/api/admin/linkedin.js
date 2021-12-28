@@ -2,10 +2,12 @@ import { makeid, stringToSlug } from "../../../helpers/functions"
 import apifyMapping from "../../../mappings/apifyMapping"
 import AdminCors from "../../../security/AdminCors"
 import ApifyService from "../../../services/Apify.service"
+import CloudinaryService from "../../../services/Cloudinary.service"
 import SupabaseService from "../../../services/Supabase.service"
 const service = new SupabaseService()
 const apifyService = new ApifyService()
-// import dump from './../../../helpers/dump.json'
+const cloudinaryService = new CloudinaryService()
+import dump from './../../../helpers/dump.json'
 
 const getCompanies = async (spreadsheetId, session) => {
   const result = await (await apifyService.companiesFromSpreadsheet(session, spreadsheetId)).json()
@@ -19,8 +21,8 @@ export default async function handler(req, res) {
   try {
     const { spreadsheetId, session } = req.query
     if (!spreadsheetId || !session) throw 'Empty params'
-    const companies = await getCompanies(spreadsheetId, session)
-    // const companies = dump
+    // const companies = await getCompanies(spreadsheetId, session)
+    const companies = dump
     if (!companies) throw 'Error while parsing the spreadsheet, please check the apify run logs.'
     const updatedCompanies = []
     for (let index = 0; index < companies.length; index++) {
@@ -36,6 +38,15 @@ export default async function handler(req, res) {
         company.slug = stringToSlug(company.name)
         company.source = 'googleSpreadsheet'
       }
+      
+      // store logo and banner
+      // TODO: This upload should be done in the first shot .... optimize it!!!
+      const logoUpload = await (await cloudinaryService.uploadImage(company.logo, 'logo_' + company.slug)).json()
+      const bannerUpload = await (await cloudinaryService.uploadImage(company.banner,  'banner_' + company.slug)).json()
+
+      company.logo    = logoUpload.url || company.logo
+      company.banner  = bannerUpload.url || company.banner
+
       company.is_verified = true
       company.syncronized = false
       

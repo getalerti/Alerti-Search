@@ -2,12 +2,14 @@
 + Import CSV dans l'admin (add props + import file getlatka)
 + import openvc csv
 
+-- ON REPAEAT
++ lancer Linkedin sur tout les orgs (100)
+
 
 --- IN PROGRESS
-+ lancer Linkedin sur tout les orgs
++ MAJ la page (mettre les infos manquants en dure)
 
 --- TODO
-+ MAJ la page (mettre les infos manquants en dure)
 + MAJ : Récupérer profils sociaux, eamil et tél à partir du nom de domaine et API leads.alerti.com(
 + social networks dans menu
     + google business profile

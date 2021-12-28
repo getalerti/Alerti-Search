@@ -20,4 +20,8 @@ export default {
     apify_token:            process.env.NEXT_PUBLIC_APIFY_TOKEN || '',
     alerti_leads_url:       process.env.NEXT_PUBLIC_ALERTI_LEADS_URL || '',
     alerti_leads_api_key:   process.env.NEXT_PUBLIC_ALERTI_LEADS_API_KEY || '',
+    cloudinary_url:         process.env.NEXT_PUBLIC_CLOUDINARY_URL || '',
+    cloudinary_api_key:     process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '',
+    cloudinary_name:        process.env.NEXT_PUBLIC_CLOUDINARY_NAME || '',
+    
 }

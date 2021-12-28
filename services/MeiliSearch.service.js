@@ -1,5 +1,4 @@
 
-import { MeiliSearch } from 'meilisearch'
 import env from '../env'
 
 class MeiliSearchService {
@@ -12,6 +11,8 @@ class MeiliSearchService {
         this.headers.append("Content-Type", "application/json");
         this.basedUrl = `${env.meilisearchUrl}/indexes/${index ? index : env.meilisearchDocument}`;
     }
+    // https://meilisearch.alerti.com/indexes/{{indexUID}}/documents/99 - DELETE
+    // https://meilisearch.alerti.com/indexes/{{indexUID}}/documents - PUT
     request = (method, url = '', body = null) => {
         const requestOptions = {
             method: method,

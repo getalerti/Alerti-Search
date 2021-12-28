@@ -40,7 +40,7 @@ const Result = () => {
         }
     }, [firstLoading])
     useEffect(() => {
-        location.href = '/edgeneural-ai-pvt-ltd'
+        location.href = '/buffer'
         setFirstLoading(false)
         setSearchQuery(getUrlSearchQuery())
         if (getUrlSearchQuery())
