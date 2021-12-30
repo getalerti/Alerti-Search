@@ -27,7 +27,6 @@ export default function Tweets({activeNav}) {
         }
       }
     useEffect(() => {
-        console.log(company)
         if (company && company.website && company.socials && company.socials.twitterUri) { 
             getTweets(company.id, company.tweets, company.tweetsUpdatedAt, sanitizeUrl(company.socials.twitterUri))
         }

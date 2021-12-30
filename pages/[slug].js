@@ -47,7 +47,7 @@ export default () => {
       if (!JSON.parse(newItem.industries) && newItem.industries) {
         newItem.industries = [newItem.industries]
       } else {
-        newItem.industries = []
+        newItem.industries = JSON.parse(_item.industries)
       }
     } catch (error) {
       newItem.industries = newItem.industries ? [newItem.industries] : []

@@ -31,7 +31,6 @@ export default function News({setActiveNav, activeNav}) {
         }
     }, [newsFeed])
     useEffect(() => {
-        console.log(company)
         if (company && company.website) { 
             // getNews(company.id, company.articles, company.articlesUpdatedAt, company.website)
         }

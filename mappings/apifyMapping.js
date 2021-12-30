@@ -5,9 +5,9 @@ const mapping = {
     telephone: "phone",
     tagLine: "motto",
     followerCount: "linkedin_follower_count",
-    // website: "website",
+    siegeSocial: "website",
     description: "description",
-    siegeSocial: "location_address",
+    siegeSocial: "location_city_name",
     fondeeEn: "founded_date",
     companyNameLinkedin: "name",
     banner: "banner",
@@ -26,6 +26,13 @@ export default (element) => {
                 value = JSON.stringify([value])
             if (value && value !== '')
                 newElement[mapp] = value
+        } else {
+            if (key === "website") {
+                newElement['website'] = element[key]
+            }
+            if (key === "website_1" && !newElement.website) {
+                newElement['website'] = element[key]
+            }
         }
     })
     
