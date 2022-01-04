@@ -73,7 +73,7 @@ export default function News({setActiveNav, activeNav}) {
                     News
                 </h2>
             </div>
-            <div className="row  mobile-slide mt-3 p-0 mx-0" data-mobile-hide={activeNav !== 'news'}>
+            <div className="row mobile-slide mt-3 p-0 mx-0 list-blocs" data-mobile-hide={activeNav !== 'news'}>
                 {/* newsFeed === null ? <Spinner light={true} /> : newsFeed.map(({image_url, url, title, snippet, timestamp}, index) => (
                     <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" 
                             key={index}
@@ -96,7 +96,7 @@ export default function News({setActiveNav, activeNav}) {
                         </div>
                     </div>
                 )) */}
-                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" >
+                <div className="card custom-card col-md-4 col-lg-4 px-0 shadow-none border-0" >
                     <a href={'#'} target="_blank"><img className="card-img-top card-img-top" src={'https://dashkit-react.vercel.app/img/kanban/kanban-2.jpg'} alt="..." /></a>
                     <div className="card-body px-0 mx-0">
                         <div className="align-items-center mb-4 row">
@@ -115,7 +115,7 @@ export default function News({setActiveNav, activeNav}) {
                     </div>
                 </div>
 
-                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" >
+                <div className="card custom-card col-md-4 col-lg-4 px-0 shadow-none border-0" >
                     <a href={'#'} target="_blank"><img className="card-img-top card-img-top" src={'https://dashkit-react.vercel.app/img/kanban/kanban-2.jpg'} alt="..." /></a>
                     <div className="card-body px-0 mx-0">
                         <div className="align-items-center mb-4 row">
@@ -134,7 +134,7 @@ export default function News({setActiveNav, activeNav}) {
                     </div>
                 </div>
 
-                <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" >
+                <div className="card custom-card col-md-4 col-lg-4 px-0 shadow-none border-0" >
                     <a href={'#'} target="_blank"><img className="card-img-top card-img-top" src={'https://dashkit-react.vercel.app/img/kanban/kanban-2.jpg'} alt="..." /></a>
                     <div className="card-body px-0 mx-0">
                         <div className="align-items-center mb-4 row">
@@ -155,7 +155,7 @@ export default function News({setActiveNav, activeNav}) {
                 
             </div>
             <button type="button" 
-            className="d-block mx-auto my-3 px-5 lift btn btn-default"
+            className="d-block mx-auto px-5 mb-4 lift btn btn-default"
             data-mobile-hide={activeNav !== 'news'}
             onClick={() => { setShowCount(20) }}>Load more news</button>
         </>

@@ -39,12 +39,12 @@ export default function Tweets({activeNav}) {
                 </h2>
             </div>
 
-            <div className="row mt-3 mx-0 mobile-slide p-0" data-mobile-hide={activeNav !== 'tweets'}>
+            <div className="row mt-3 mx-0 mb-4 pb-3 mobile-slide p-0 list-blocs tweets" data-mobile-hide={activeNav !== 'tweets'}>
             {/* tweetsFeed === null ? <Spinner light={true} /> : tweetsFeed.map(({ url, user, full_text, created_at}, index) => (
                 
             )
             ) */}
-            <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
+            <div className="card custom-card col-md-4 col-lg-4 px-0 shadow-none border-0">
                     <a href={'#'} target="_blank">
                     <img className="card-img-top card-img-top" src={"https://dashkit-react.vercel.app/img/avatars/projects/project-1.jpg"} alt="..." /></a>
                     <div className="card-body my-0 py-0 px-0 mx-0">
@@ -57,7 +57,7 @@ export default function Tweets({activeNav}) {
                                                 alt="..." />
                                         </div>
                                     </div>
-                                    <div className="col">
+                                    <div className="col px-0 mx-0">
                                         <p className="twitter-username mb-0">
                                             <b>@youssame</b> <br />
                                             November 25, 2021
@@ -72,7 +72,7 @@ export default function Tweets({activeNav}) {
                     </div>
             </div>
 
-            <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
+            <div className="card custom-card col-md-4 col-lg-4 px-0 shadow-none border-0">
                     <a href={'#'} target="_blank">
                     <img className="card-img-top card-img-top" src={"https://dashkit-react.vercel.app/img/avatars/projects/project-1.jpg"} alt="..." /></a>
                     <div className="card-body my-0 py-0 px-0 mx-0">
@@ -85,7 +85,7 @@ export default function Tweets({activeNav}) {
                                                 alt="..." />
                                         </div>
                                     </div>
-                                    <div className="col">
+                                    <div className="col px-0 mx-0">
                                         <p className="twitter-username mb-0">
                                             <b>@youssame</b> <br />
                                             November 25, 2021
@@ -100,7 +100,7 @@ export default function Tweets({activeNav}) {
                     </div>
             </div>
 
-            <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0">
+            <div className="card custom-card col-md-4 col-lg-4 px-0 shadow-none border-0">
                     <a href={'#'} target="_blank">
                     <img className="card-img-top card-img-top" src={"https://dashkit-react.vercel.app/img/avatars/projects/project-1.jpg"} alt="..." /></a>
                     <div className="card-body my-0 py-0 px-0 mx-0">
@@ -113,7 +113,7 @@ export default function Tweets({activeNav}) {
                                                 alt="..." />
                                         </div>
                                     </div>
-                                    <div className="col">
+                                    <div className="col px-0 mx-0">
                                         <p className="twitter-username mb-0">
                                             <b>@youssame</b> <br />
                                             November 25, 2021
@@ -131,9 +131,8 @@ export default function Tweets({activeNav}) {
             </div>
             <button type="button"
             onClick={() => { setShowCount(20) }}
-            className="d-block mx-auto my-3 px-5 lift btn btn-default"
             data-mobile-hide={activeNav !== 'tweets'}
-             className="d-block mx-auto px-5 lift btn btn-default">Load more tweets</button>
+             className="d-block mx-auto px-5 mb-4 lift btn btn-default">Load more tweets</button>
         </>
     )
 }

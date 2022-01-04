@@ -125,6 +125,9 @@
             height: 52px;
             width: 52px;
             margin-right: 25px;
+            &:last-child {
+                margin-right: 0px;
+            }
         }
     }
     .panel__title {
@@ -238,8 +241,9 @@
             color: #2AC61B;
         }
         .score__result {
-            width: 60%;
+            width: 67%;
             border-right: 1px solid #EAEDF2;
+            padding-right: 24px;
             h4 {
                 color: #1E2022;
                 font-size: 33.6px;
@@ -393,10 +397,59 @@ span.avatar-right-nav {
         margin-left: 10px;
     }
 }
+.page__section__main {
+    background-color: #fff;
+    padding: 41px 36px 72px;
+    border-radius: 5px;
+}
 
+.side-small-bloc {
+    .avatar {
+        width: 34px;
+        height: 34px;
+    }
+    .linkedin-username b {
+        color: #030303;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: 18px;
+        font-weight: 200;
+    }
+    .col-auto {
+        padding-right: 6px;
+    }
+}
 @media screen and (min-width: 768px) {
     .nav-icons-right {
         position: relative;
         left: 45px;
     } 
+    .page__section__container {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        .page__section__main {
+            width: 77.33%;
+        }
+        .page__section__side {
+            width: 19.6%;
+        }
+    }
+    .list-blocs {
+        justify-content: space-between;
+        &.tweets {
+            &>.custom-card {
+                .card-img-top {
+                    height: 150px;
+                }
+                .avatar {
+                    margin-right: 5px;
+                }
+            } 
+        }
+        &>.custom-card {
+            width: 31.5%;
+        }
+    }
+    
 }

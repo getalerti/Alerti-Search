@@ -8,7 +8,7 @@ export default function ReputationScore() {
                 Reputation score <i className="px-2 far fa-question-circle"></i>
                 </h2>
             </div>
-            <div className="score mt-4">
+            <div className="score mt-2">
                 <div className="score__result">
                     <h4>86<span>/100</span></h4>
                     <div className="score__result__stars">

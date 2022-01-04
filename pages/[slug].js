@@ -75,20 +75,17 @@ export default () => {
           <PageHeader  />
         </div>
         <div className="container pb-5 mb-5">
-          <div className="row">
-
-            <div className="col-md-9 col-lg-9">
-              <div className="page__section pt-md-5 pt-lg-5">
-                <div className="d-block d-lg-none d-md-none">
-                  <ReputationScore />
-                </div>
-                <News setActiveNav={setActiveNav} activeNav={activeNav} />
-                <Tweets activeNav={activeNav} />
-                <Videos  activeNav={activeNav} />
+          <div className="page__section__container">
+            <div className="page__section__main">
+              <div className="d-block d-lg-none d-md-none">
+                <ReputationScore />
               </div>
+              <News setActiveNav={setActiveNav} activeNav={activeNav} />
+              <Tweets activeNav={activeNav} />
+              <Videos  activeNav={activeNav} />
             </div>
 
-            <div className="col-md-3 col-lg-3">
+            <div className="page__section__side">
               <div className="d-none d-lg-block d-md-block">
                 <ReputationScore />
               </div>
@@ -101,7 +98,7 @@ export default () => {
           </div>
           <RelatedSearches />
         </div>
-        {/* <Footer /> */}
+        <Footer /> 
       </div>
     </Context.Provider>
    

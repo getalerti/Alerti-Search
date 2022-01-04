@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function BusinessClients({ name }) {
     return (
-        <div className="page__section mt-5 pt-5 side-bar-3">
+        <div className="page__section mt-5 pt-5 side-bar-3 side-small-bloc">
             <div className="panel__title d-flex justify-content-between">
                 <h2>
                     Companies using {name}
@@ -53,7 +53,7 @@ export default function BusinessClients({ name }) {
             {/* END CONTACT */}
 
 
-            <span class="link mt-4 d-block text-center">+ Add your company</span>
+            <span class="link mt-4 d-block text-center">View all companies</span>
         </div>
     )
 }
