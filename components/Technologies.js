@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Technologies() {
     return (
-        <div className="page__section mt-5 pt-5">
+        <div className="page__section mt-5 pt-5 side-bar-5">
             <div className="panel__title d-flex justify-content-between">
                 <h2 className="my-0">
                     Technology

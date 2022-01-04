@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ReputationScore() {
     return (
-        <div className=" page__section  mt-md-5 pt-md-5 mt-lg-5 pt-lg-5">
+        <div className="page__section pt-md-5 pt-lg-5 side-bar-1">
             <div className="panel__title d-flex justify-content-between">
                 <h2>
                 Reputation score <i className="px-2 far fa-question-circle"></i>

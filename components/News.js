@@ -42,10 +42,10 @@ export default function News({setActiveNav, activeNav}) {
                 <h2>
                 39 482 people talk about {company.name}
                 </h2>
-                <h3 className="d-none d-lg-block d-md-block">
+                <p className="d-none d-lg-block d-md-block news-refresh-block">
                     Last update : {new Date(Date(company.articlesUpdatedAt)).toLocaleString()}
-                    <span className="px-2"><i className="fas fa-sync-alt"></i> Refresh</span>
-                </h3>
+                    <span className="btn-link"><i className="fas fa-sync-alt"></i> Refresh</span>
+                </p>
             </div>
             { /* authors.length > 0 && */ <div className="avatars-group slide pt-3">
                 { /*
@@ -73,7 +73,7 @@ export default function News({setActiveNav, activeNav}) {
                     News
                 </h2>
             </div>
-            <div className="row  mobile-slide mt-3 p-0" data-mobile-hide={activeNav !== 'news'}>
+            <div className="row  mobile-slide mt-3 p-0 mx-0" data-mobile-hide={activeNav !== 'news'}>
                 {/* newsFeed === null ? <Spinner light={true} /> : newsFeed.map(({image_url, url, title, snippet, timestamp}, index) => (
                     <div className="card custom-card col-md-4 col-lg-4 px-3 shadow-none border-0" 
                             key={index}

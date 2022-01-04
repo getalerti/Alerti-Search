@@ -39,7 +39,7 @@ export default function Tweets({activeNav}) {
                 </h2>
             </div>
 
-            <div className="row mt-3  mobile-slide p-0" data-mobile-hide={activeNav !== 'tweets'}>
+            <div className="row mt-3 mx-0 mobile-slide p-0" data-mobile-hide={activeNav !== 'tweets'}>
             {/* tweetsFeed === null ? <Spinner light={true} /> : tweetsFeed.map(({ url, user, full_text, created_at}, index) => (
                 
             )
