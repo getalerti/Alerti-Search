@@ -10,9 +10,9 @@ export default function RelatedSearches() {
             </div>
             <div className="slide mt-3">
                 {/* CONTACT */}
-                    <div className="d-inline-block mx-3">
+                    <div className="d-inline-block mx-3 related-item">
                         <div className="align-items-center row py-3 company-mini-profile">
-                            <div className="col-auto">
+                            <div className="col-auto pl-0">
                                 <div className="avatar">
                                     <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-1.jpg"
                                         alt="..." />
@@ -24,7 +24,7 @@ export default function RelatedSearches() {
                                     4,6/5 (12 456)
                                 </p>
                                 <div className="score mt-1">
-                                    <div className="score__result border-0">
+                                    <div className="score__result pr-0 border-0">
                                         <div className="score__result__stars">
                                             <i className="fas fa-star"></i>
                                             <i className="fas fa-star"></i>
@@ -40,9 +40,9 @@ export default function RelatedSearches() {
 
 
 
-                    <div className="d-inline-block mx-3">
+                    <div className="d-inline-block mx-3 related-item">
                         <div className="align-items-center row py-3 company-mini-profile">
-                            <div className="col-auto">
+                            <div className="col-auto pl-0">
                                 <div className="avatar">
                                     <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-2.jpg"
                                         alt="..." />
@@ -54,7 +54,7 @@ export default function RelatedSearches() {
                                     4,6/5 (12 456)
                                 </p>
                                 <div className="score mt-1">
-                                    <div className="score__result border-0">
+                                    <div className="score__result pr-0 border-0">
                                         <div className="score__result__stars">
                                             <i className="fas fa-star"></i>
                                             <i className="fas fa-star"></i>
@@ -71,9 +71,9 @@ export default function RelatedSearches() {
 
 
 
-                    <div className="d-inline-block mx-3">
+                    <div className="d-inline-block mx-3 related-item">
                         <div className="align-items-center row py-3 company-mini-profile">
-                            <div className="col-auto">
+                            <div className="col-auto pl-0">
                                 <div className="avatar">
                                     <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-3.jpg"
                                         alt="..." />
@@ -85,7 +85,7 @@ export default function RelatedSearches() {
                                     4,6/5 (12 456)
                                 </p>
                                 <div className="score mt-1">
-                                    <div className="score__result border-0">
+                                    <div className="score__result pr-0 border-0">
                                         <div className="score__result__stars">
                                             <i className="fas fa-star"></i>
                                             <i className="fas fa-star"></i>
@@ -101,9 +101,9 @@ export default function RelatedSearches() {
 
 
 
-                    <div className="d-inline-block mx-3">
+                    <div className="d-inline-block mx-3 related-item">
                         <div className="align-items-center row py-3 company-mini-profile">
-                            <div className="col-auto">
+                            <div className="col-auto pl-0">
                                 <div className="avatar">
                                     <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-4.jpg"
                                         alt="..." />
@@ -115,7 +115,7 @@ export default function RelatedSearches() {
                                     4,6/5 (12 456)
                                 </p>
                                 <div className="score mt-1">
-                                    <div className="score__result border-0">
+                                    <div className="score__result pr-0 border-0">
                                         <div className="score__result__stars">
                                             <i className="fas fa-star"></i>
                                             <i className="fas fa-star"></i>
@@ -129,9 +129,9 @@ export default function RelatedSearches() {
                         </div>
                     </div>
 
-                    <div className="d-inline-block mx-3">
+                    <div className="d-inline-block mx-3 related-item">
                         <div className="align-items-center row py-3 company-mini-profile">
-                            <div className="col-auto">
+                            <div className="col-auto pl-0">
                                 <div className="avatar">
                                     <img className="avatar-img rounded-circle" src="https://dashkit-react.vercel.app/img/avatars/teams/team-logo-5.jpg"
                                         alt="..." />
@@ -143,7 +143,7 @@ export default function RelatedSearches() {
                                     4,6/5 (12 456)
                                 </p>
                                 <div className="score mt-1">
-                                    <div className="score__result border-0">
+                                    <div className="score__result pr-0 border-0">
                                         <div className="score__result__stars">
                                             <i className="fas fa-star"></i>
                                             <i className="fas fa-star"></i>
@@ -156,8 +156,6 @@ export default function RelatedSearches() {
                             </div>
                         </div>
                     </div>
-
-
                    
                 {/* END CONTACT */}
             </div>

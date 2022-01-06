@@ -52,7 +52,7 @@ export default function BusinessClients({ name }) {
             </div>
             {/* END CONTACT */}
 
-
+            <a href="#" className="small-block-large-link"><i className="fal fa-plus"></i> <u>Add your company</u></a>
             <span class="link mt-4 d-block text-center">View all companies</span>
         </div>
     )

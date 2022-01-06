@@ -14,6 +14,7 @@ import Videos from '../components/Videos'
 import { diffDaysTimestamps, getRouteParam } from './../helpers/functions'
 import { useRouter } from 'next/router'
 import Company from '../models/Company'
+import Posts from '../components/Posts'
 
 export const Context = createContext({...Company});
 
@@ -83,6 +84,7 @@ export default () => {
               <News setActiveNav={setActiveNav} activeNav={activeNav} />
               <Tweets activeNav={activeNav} />
               <Videos  activeNav={activeNav} />
+              <Posts  activeNav={activeNav} />
             </div>
 
             <div className="page__section__side">
