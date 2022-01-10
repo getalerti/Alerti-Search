@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FindContacts() {
     return (
-        <div className="page__section mt-5 pt-5 side-bar-2 side-small-bloc">
+        <div className="page__section mt-5 pt-5 side-bar-2 side-small-bloc mt-mobile-0 pt-mobile-0 mobile-card-top-space">
             <div className="panel__title d-flex justify-content-between">
                 <h2>
                     find contacts

@@ -77,10 +77,10 @@ export default () => {
         </div>
         <div className="container pb-5 mb-5 full-mobile">
           <div className="page__section__container">
-            <div className="page__section__main">
               <div className="d-block d-lg-none d-md-none">
                 <ReputationScore />
               </div>
+            <div className="page__section__main">
               <News setActiveNav={setActiveNav} activeNav={activeNav} />
               <Tweets activeNav={activeNav} />
               <Videos  activeNav={activeNav} />

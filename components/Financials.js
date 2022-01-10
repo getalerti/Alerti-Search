@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function Financials() {
     const [open, setOpen] = useState(false)
+    useEffect(() => {
+        if (window && window.innerWidth < 768) {
+            setOpen(true);
+        }
+    }, [])
     return (
-        <div className="page__section mt-5 pt-5 side-bar-4">
+        <div className="page__section mt-5 pt-5 side-bar-4 mt-mobile-0 pt-mobile-0 mobile-card-top-space">
             <div className={`panel__title d-flex justify-content-between ${open ? 'mb-4' : ''}`}>
                 <h2 className="my-0">
                     Financials

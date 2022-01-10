@@ -155,7 +155,7 @@ export default function News({setActiveNav, activeNav}) {
                 
             </div>
             <button type="button" 
-            className="d-block mx-auto px-5 mb-4 lift btn btn-default"
+            className="d-block mx-auto px-5 mb-4 lift btn btn-default hide-mobile"
             data-mobile-hide={activeNav !== 'news'}
             onClick={() => { setShowCount(20) }}>Load more news</button>
         </>

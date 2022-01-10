@@ -266,6 +266,14 @@ img.header-img-top {
     display: block;
     & > div {
       display: inline-block !important;
+      width: 83% !important;
+      margin-right: 21px !important;
+      .card-body {
+        padding-bottom: 0 !important;
+        .row.align-items-center {
+          margin-bottom: 0 !important;
+        }
+      }
     }
     & {
         scrollbar-width: auto;

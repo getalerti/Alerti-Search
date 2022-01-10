@@ -1,7 +1,7 @@
 import React from 'react'
 export default function Footer() {
     return (
-        <div className="footer">
+        <div className="footer hide-mobile">
             <h2 className="mx-4">
                 Get the latest news about what people said about Buffer
             </h2>

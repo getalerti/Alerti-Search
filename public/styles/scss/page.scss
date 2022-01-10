@@ -565,8 +565,46 @@ p.post-text {
 }
 @media screen and (max-width: 768px) {
     .hide-mobile {display: none !important;}
+    .mt-mobile-0 {margin-top: 0 !important;}
+    .pt-mobile-0 {padding-top: 0 !important;}
+    .pb-mobile-0 {padding-bottom: 0 !important;}
+    .p-mobile-0 {padding: 0 !important;}
+    .company-page .link {
+        text-align: left !important;
+    }
+    .panel__title h3 {
+        display: none;
+    }
+    .company-page .company-mini-profile {
+        max-width: 206.48px;
+        margin-right: 30px;
+    }
+    .mobile-card-top-space { 
+        &::before {
+            content: "";
+            display: block;
+            margin-bottom: 40px;
+            height: 1px;
+            position: relative;
+            top: 10px;
+            background: #E8E8E8;
+        }
+     }
+     .company-page{
+         .score__arrow {
+             margin-right: 21px;
+         }
+         .score .score__result  {
+            width: 110px;
+         }
+    }
+    .page__section__main {
+        padding: 41px 21px 0px !important;
+    }
 
-    .footer { position: static !important;}
+    .page__section {
+        border-radius: 0 !important;
+    }
     .full-mobile {
         width: 100% !important;
         max-width: 100% !important;
