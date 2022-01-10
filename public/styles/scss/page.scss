@@ -35,16 +35,16 @@
             }
         }
     }
+    .page--infos--btns {
+        margin-left: auto;
+        max-width: 220px;
+        align-self: center;
+    }
     .page-header {
         border-radius: 0 0 5px 5px;
         background-color: #FFFFFF;
         .header-body {
             border: none;
-        }
-        .page--infos--btns {
-            margin-left: auto;
-            max-width: 220px;
-            align-self: center;
         }
         .page__infos {
             .header-title {
@@ -569,6 +569,34 @@ p.post-text {
     .pt-mobile-0 {padding-top: 0 !important;}
     .pb-mobile-0 {padding-bottom: 0 !important;}
     .p-mobile-0 {padding: 0 !important;}
+    .page--infos--btns.hide-desktop {
+        justify-content: space-between;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        padding: 16px 20px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 5px 2px rgba(207,207,207,0.5);
+        button {
+            padding: 0;
+            height: 17px;
+            width: 79px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0;
+            line-height: 16.43px;
+            height: 32px;
+            margin: 0 !important;
+        }
+        button:first-child {
+            width: 52%;
+            max-width: 52%;
+        }
+        button:last-child {
+            width: 39%;
+            max-width: 39%;
+        }
+    }
     .company-page .link {
         text-align: left !important;
     }

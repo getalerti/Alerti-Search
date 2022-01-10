@@ -52030,17 +52030,17 @@ readers do not read off random characters that represent icons */
 .company-page .top-navbar .navbar .input-group-merge input, .company-page .top-navbar .navbar .input-group-merge i {
   color: #1E2022;
 }
+.company-page .page--infos--btns {
+  margin-left: auto;
+  max-width: 220px;
+  align-self: center;
+}
 .company-page .page-header {
   border-radius: 0 0 5px 5px;
   background-color: #FFFFFF;
 }
 .company-page .page-header .header-body {
   border: none;
-}
-.company-page .page-header .page--infos--btns {
-  margin-left: auto;
-  max-width: 220px;
-  align-self: center;
 }
 .company-page .page-header .page__infos .header-title {
   color: #030303;
@@ -52575,6 +52575,35 @@ p.post-text span {
     padding: 0 !important;
   }
 
+  .page--infos--btns.hide-desktop {
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    padding: 16px 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 5px 2px rgba(207, 207, 207, 0.5);
+  }
+  .page--infos--btns.hide-desktop button {
+    padding: 0;
+    height: 17px;
+    width: 79px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16.43px;
+    height: 32px;
+    margin: 0 !important;
+  }
+  .page--infos--btns.hide-desktop button:first-child {
+    width: 52%;
+    max-width: 52%;
+  }
+  .page--infos--btns.hide-desktop button:last-child {
+    width: 39%;
+    max-width: 39%;
+  }
+
   .company-page .link {
     text-align: left !important;
   }
@@ -52611,10 +52640,6 @@ p.post-text span {
 
   .page__section {
     border-radius: 0 !important;
-  }
-
-  .footer {
-    display: none;
   }
 
   .full-mobile {

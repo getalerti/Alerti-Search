@@ -15,6 +15,7 @@ import { diffDaysTimestamps, getRouteParam } from './../helpers/functions'
 import { useRouter } from 'next/router'
 import Company from '../models/Company'
 import Posts from '../components/Posts'
+import AlertiButtons from '../components/AlertiButtons'
 
 export const Context = createContext({...Company});
 
@@ -70,7 +71,7 @@ export default () => {
   
   return (
     <Context.Provider value={item}>
-      <div className="fluid-container company-page px-0 mx-0 pb-5">
+      <div className="fluid-container company-page px-0 mx-0 pb-5 pb-mobile-0">
         <TopNavbar name="Buffer" />
         <div className="container full-mobile">
           <PageHeader  />
@@ -101,6 +102,7 @@ export default () => {
           <RelatedSearches />
         </div>
         <Footer /> 
+        <AlertiButtons className="col page--infos--btns hide-desktop" />
       </div>
     </Context.Provider>
    

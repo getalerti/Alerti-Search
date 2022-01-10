@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../pages/[slug]'
+import AlertiButtons from './AlertiButtons';
 
 export default function PageHeader() {
     const company = useContext(Context)
@@ -51,14 +52,7 @@ export default function PageHeader() {
                             }) : ''}
                             </p>
                         </div>
-                        <div className="col page--infos--btns hide-mobile">
-                            <button type="button" className="w-100 lift btn btn-primary">
-                                <i className="fad fa-bell-plus"></i> Setup an alert
-                            </button>
-                            <button type="button" className="w-100 mt-3 lift btn btn-default">
-                                <i className="fal fa-bookmark"></i> Add to list
-                            </button>
-                        </div>
+                        <AlertiButtons className="col page--infos--btns hide-mobile" />
                     </div>
                 </div>
             </div>
