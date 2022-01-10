@@ -13,7 +13,6 @@ const mapping = {
     banner: "banner",
     logo: "logo",
     companyUrl: "linkedIn_url",
-    companyNameLinkedin: "name"
 }
 export default (element) => {
     const newElement = {}

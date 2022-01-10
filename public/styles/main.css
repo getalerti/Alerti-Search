@@ -51992,6 +51992,9 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+.company-page {
+  --bs-gutter-x: 20px;
+}
 .company-page .top-navbar {
   background-color: #FFFFFF;
 }
@@ -52354,8 +52357,8 @@ span.notif-number {
   border-radius: 100%;
   position: absolute;
   background-color: #BB2C24;
-  top: 7px;
-  right: -3px;
+  top: -1px;
+  right: -9px;
   text-align: center;
   line-height: 16px;
 }
@@ -52494,7 +52497,29 @@ p.post-text span {
   padding-right: 0 !important;
 }
 
+.nav-right-icons {
+  list-style: none;
+  font-size: 22px;
+  margin: 0;
+  padding: 0;
+  width: 120px;
+  justify-content: space-between;
+}
+.nav-right-icons li {
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.mobile-logo img {
+  max-height: 100% !important;
+}
+
 @media screen and (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
+
   p.post-text {
     padding-right: 40px;
   }
@@ -52527,6 +52552,44 @@ p.post-text span {
   }
   .list-blocs > .custom-card {
     width: 31.5%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .footer {
+    position: static !important;
+  }
+
+  .full-mobile {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .custom-header-body {
+    top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .page__infos .header-title {
+    display: flex;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    align-items: center;
+  }
+  .page__infos .header-title img {
+    height: 60px;
+    width: 60px;
+    margin-right: 18px;
+    position: relative;
+    top: -15px;
+  }
+  .page__infos .header-title .fas.fa-badge-check {
+    margin-left: 6px;
   }
 }
 .search-area .card-body {

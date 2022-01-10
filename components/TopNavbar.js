@@ -41,8 +41,9 @@ export default function TopNavbar() {
         <div className="top-navbar">
             <div className="container">
                 <nav className="navbar navbar-expand-lg p-3 px-0">
-                    <a className="navbar-brand" href="#"><img src="/img/logo.png" /></a>
-                    <div className="input-group-merge input-group-flush input-group-reverse input-group position-relative">
+                    <a className="navbar-brand d-none d-lg-block d-md-block" href="#"><img src="/img/logo.png" /></a>
+                    <a className="navbar-brand d-block d-lg-none d-md-none mobile-logo" href="#"><img src="/img/m-logo.svg" /></a>
+                    <div className="d-none input-group-merge input-group-flush input-group-reverse input-group position-relative">
                         <input placeholder="Search" type="search" className="form-control" onChange={handleInputChange} />
                         <span className="input-group-text"><i className="fal fa-search"></i></span>
                         { items && items.length > 0 ? (
@@ -59,24 +60,22 @@ export default function TopNavbar() {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-icons-right">
-                        <li className="nav-item">
-                            <a className="nav-link" aria-current="page" href="#"><i className="fal fa-bookmark"></i></a>
+                    <ul className="d-flex mb-lg-0 nav-right-icons">
+                        <li>
+                            <a aria-current="page" href="#"><i className="fal fa-bookmark"></i></a>
                         </li>
-                        <li className="nav-item px-3">
-                            <a className="nav-link position-relative" aria-current="page" href="#">
+                        <li>
+                            <a className="position-relative" aria-current="page" href="#">
                                 <span className="notif-number">2</span>
                                 <i className="fal fa-bell"></i>
                             </a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" aria-current="page" href="#">
+                        <li>
+                            <a aria-current="page" href="#">
                                 <span className="avatar-right-nav">SG</span>
                             </a>
                         </li>
                     </ul>
-                    </div>
                 </nav>
             </div>
         </div>

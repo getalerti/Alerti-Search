@@ -72,10 +72,10 @@ export default () => {
     <Context.Provider value={item}>
       <div className="fluid-container company-page px-0 mx-0 pb-5">
         <TopNavbar name="Buffer" />
-        <div className="container">
+        <div className="container full-mobile">
           <PageHeader  />
         </div>
-        <div className="container pb-5 mb-5">
+        <div className="container pb-5 mb-5 full-mobile">
           <div className="page__section__container">
             <div className="page__section__main">
               <div className="d-block d-lg-none d-md-none">

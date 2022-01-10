@@ -1,0 +1,29 @@
+<svg width="100px" height="32px" viewBox="0 0 100 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>BECF50EB-0C84-4237-8ACE-AF4E50E7B2CC</title>
+    <defs>
+        <linearGradient x1="-40.7230513%" y1="-46.253067%" x2="207.559807%" y2="141.357392%" id="linearGradient-1">
+            <stop stop-color="#6C1FD2" offset="0%"></stop>
+            <stop stop-color="#FA2355" offset="48.0890966%"></stop>
+            <stop stop-color="#FFCA5F" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="43.240618%" y1="-46.253067%" x2="61.7390996%" y2="141.357392%" id="linearGradient-2">
+            <stop stop-color="#6C1FD2" offset="0%"></stop>
+            <stop stop-color="#FA2355" offset="48.0890966%"></stop>
+            <stop stop-color="#FFCA5F" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-42.3702313%" y1="-21.4303904%" x2="210.420484%" y2="117.79726%" id="linearGradient-3">
+            <stop stop-color="#6C1FD2" offset="0%"></stop>
+            <stop stop-color="#FA2355" offset="48.0890966%"></stop>
+            <stop stop-color="#FFCA5F" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Reputation-page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="reputation_page_mobile" transform="translate(-19.000000, -14.000000)" fill-rule="nonzero">
+            <g id="alerti-brand" transform="translate(20.000000, 15.000000)">
+                <path d="M12.6051779,19.2453559 C10.2803776,19.2453559 8.39673405,17.3443309 8.39673405,14.99968 C8.39673405,12.6550292 10.2803776,10.7540042 12.6051779,10.7540042 C14.9283911,10.7540042 16.8120347,12.6550292 16.8120347,14.99968 C16.8120347,17.3443309 14.9283911,19.2453559 12.6051779,19.2453559 Z" id="Fill-1" fill="url(#linearGradient-1)"></path>
+                <path d="M25.5088507,28.0237027 C28.9539983,24.5451633 30.8535109,19.9199231 30.8535109,15 C30.8535109,10.0800769 28.9539983,5.45483663 25.5072638,1.97629724 L27.4670783,0 C31.4359011,4.00704676 33.6226415,9.33376039 33.6226415,15 C33.6226415,20.6662396 31.437488,25.9929531 27.4670783,30 L25.5088507,28.0237027 Z" id="Fill-6-Copy" stroke="url(#linearGradient-2)" stroke-width="0.789473684" fill="url(#linearGradient-2)" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M0,15.0001605 C0,11.601698 1.31077473,8.40663072 3.69111625,6.00432451 L5.65093077,7.98222329 C3.79426438,9.85602213 2.77071753,12.3480144 2.77071753,15.0001605 C2.77071753,20.4726141 7.18228381,24.9248882 12.6047018,24.9248882 C18.0271198,24.9248882 22.438686,20.4726141 22.438686,15.0001605 C22.438686,12.3480144 21.4151392,9.85602213 19.5584728,7.98222329 L21.5167004,6.00432451 C23.8986289,8.40663072 25.2094036,11.601698 25.2094036,15.0001605 C25.2094036,22.0148947 19.5552991,27.7211727 12.6047018,27.7211727 C5.65410455,27.7211727 0,22.0148947 0,15.0001605 Z" id="Fill-3" stroke="url(#linearGradient-3)" stroke-width="0.789473684" fill="url(#linearGradient-3)" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>
