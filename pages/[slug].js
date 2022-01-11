@@ -71,7 +71,7 @@ export default () => {
   
   return (
     <Context.Provider value={item}>
-      <div className="fluid-container company-page px-0 mx-0 pb-5 pb-mobile-0">
+      <div className="fluid-container company-page px-0 mx-0 pb-5">
         <TopNavbar name="Buffer" />
         <div className="container full-mobile">
           <PageHeader  />

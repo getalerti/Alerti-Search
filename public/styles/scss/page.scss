@@ -569,6 +569,12 @@ p.post-text {
     .pt-mobile-0 {padding-top: 0 !important;}
     .pb-mobile-0 {padding-bottom: 0 !important;}
     .p-mobile-0 {padding: 0 !important;}
+    .company-page {
+        padding-bottom: 123px !important;
+    }
+    body {
+        background-color: #fff;
+    }
     .page--infos--btns.hide-desktop {
         justify-content: space-between;
         width: 100%;
@@ -576,6 +582,9 @@ p.post-text {
         display: flex;
         padding: 16px 20px;
         background-color: #FFFFFF;
+        position: fixed;
+        bottom: 0;
+        left: 0;
         box-shadow: 0 2px 5px 2px rgba(207,207,207,0.5);
         button {
             padding: 0;
